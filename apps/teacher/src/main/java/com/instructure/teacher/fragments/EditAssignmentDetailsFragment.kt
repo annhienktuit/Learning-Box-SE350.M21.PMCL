@@ -48,6 +48,8 @@ import com.instructure.canvasapi2.utils.Pronouns
 import com.instructure.canvasapi2.utils.weave.awaitApi
 import com.instructure.canvasapi2.utils.weave.weave
 import com.instructure.interactions.router.Route
+import com.instructure.pandautils.analytics.SCREEN_VIEW_EDIT_ASSIGNMENT_DETAILS
+import com.instructure.pandautils.analytics.ScreenView
 import com.instructure.pandautils.dialogs.DatePickerDialogFragment
 import com.instructure.pandautils.dialogs.TimePickerDialogFragment
 import com.instructure.pandautils.discussions.DiscussionUtils
@@ -73,6 +75,7 @@ import java.text.DecimalFormat
 import java.text.ParseException
 import java.util.Date
 
+@ScreenView(SCREEN_VIEW_EDIT_ASSIGNMENT_DETAILS)
 class EditAssignmentDetailsFragment : BaseFragment() {
 
     private var mCourse: Course by ParcelableArg(Course())
@@ -430,8 +433,6 @@ class EditAssignmentDetailsFragment : BaseFragment() {
             val type = "none"
             val submissionList = listOf(type)
             postData.submissionTypes = submissionList
-        } else {
-            postData.submissionTypes = mAssignment.submissionTypesRaw
         }
 
         // if we want to set the type as not graded, we don't want a submission type or points possible
@@ -461,7 +462,11 @@ class EditAssignmentDetailsFragment : BaseFragment() {
             } catch (e: Throwable) {
                 saveButton?.setVisible()
                 savingProgressBar.setGone()
-                toast(R.string.error_saving_assignment)
+                if (mAssignment.inClosedGradingPeriod) {
+                    toast(R.string.error_saving_assignment_closed_grading_period)
+                } else {
+                    toast(R.string.error_saving_assignment)
+                }
             }
         }
     }

@@ -33,6 +33,8 @@ import com.instructure.canvasapi2.utils.APIHelper
 import com.instructure.canvasapi2.utils.DateHelper
 import com.instructure.canvasapi2.utils.parcelCopy
 import com.instructure.canvasapi2.utils.toApiString
+import com.instructure.pandautils.analytics.SCREEN_VIEW_EDIT_FILE_FOLDER
+import com.instructure.pandautils.analytics.ScreenView
 import com.instructure.pandautils.dialogs.DatePickerDialogFragment
 import com.instructure.pandautils.dialogs.TimePickerDialogFragment
 import com.instructure.pandautils.fragments.BasePresenterFragment
@@ -50,6 +52,7 @@ import com.instructure.teacher.view.EditFileView
 import kotlinx.android.synthetic.main.fragment_edit_filefolder.*
 import java.util.*
 
+@ScreenView(SCREEN_VIEW_EDIT_FILE_FOLDER)
 class EditFileFolderFragment : BasePresenterFragment<
         EditFileFolderPresenter,
         EditFileView>(), EditFileView {
@@ -354,7 +357,9 @@ class EditFileFolderFragment : BasePresenterFragment<
 
         // Setup initial value
         val initialPosition =
-                when (presenter.currentFileOrFolder.usageRights?.useJustification?.name?.toLowerCase()) {
+                when (presenter.currentFileOrFolder.usageRights?.useJustification?.name?.lowercase(
+                    Locale.getDefault()
+                )) {
                     "own_copyright" -> spinnerAdapter.getPosition(getString(R.string.holdCopyright))
                     "used_by_permission" -> spinnerAdapter.getPosition(getString(R.string.havePermission))
                     "public_domain" -> spinnerAdapter.getPosition(getString(R.string.publicDomain))
@@ -404,8 +409,8 @@ class EditFileFolderFragment : BasePresenterFragment<
 
         updateFileFolder = updateFileFolder.copy(name = titleEditText.text.toString())
 
-        mAccessStatus.lockAt = lockDate.toApiString() ?: ""
-        mAccessStatus.unlockAt = unlockDate.toApiString() ?: ""
+        mAccessStatus.lockAt = lockDate.toApiString()
+        mAccessStatus.unlockAt = unlockDate.toApiString()
 
         presenter.updateFileFolder(updateFileFolder, mAccessStatus, mUsageType, mLicenseType, copyrightEditText.text.toString())
     }

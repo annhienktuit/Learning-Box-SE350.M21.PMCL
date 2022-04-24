@@ -22,11 +22,11 @@ import androidx.test.espresso.Espresso
 import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.matcher.ViewMatchers
 import android.view.View
+import com.adevinta.android.barista.interaction.BaristaScrollInteractions
+import com.adevinta.android.barista.interaction.BaristaSleepInteractions
 import com.instructure.espresso.actions.ViewCallOnClick
 import com.instructure.espresso.click
 import com.instructure.espresso.matchers.WaitForViewMatcher
-import com.schibsted.spain.barista.interaction.BaristaScrollInteractions
-import com.schibsted.spain.barista.interaction.BaristaSleepInteractions
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers
 
@@ -161,6 +161,8 @@ fun BasePage.callOnClick(matcher: Matcher<View>) = ViewCallOnClick.callOnClick(m
 fun BasePage.scrollTo(viewId: Int) = BaristaScrollInteractions.safelyScrollTo(viewId)
 
 fun BasePage.scrollTo(text: String) = BaristaScrollInteractions.safelyScrollTo(text)
+
+fun BasePage.scrollTo(matcher: Matcher<View>) = BaristaScrollInteractions.safelyScrollTo(matcher)
 
 fun BasePage.waitScrollClick(viewId: Int) {
     val view = waitForViewWithId(viewId)

@@ -25,28 +25,38 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.webkit.WebView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.findFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.instructure.canvasapi2.models.Course
 import com.instructure.pandautils.BuildConfig
 import com.instructure.pandautils.R
+import com.instructure.pandautils.analytics.SCREEN_VIEW_K5_HOMEROOM
+import com.instructure.pandautils.analytics.ScreenView
 import com.instructure.pandautils.databinding.FragmentHomeroomBinding
 import com.instructure.pandautils.discussions.DiscussionUtils
+import com.instructure.pandautils.features.dashboard.notifications.DashboardNotificationsFragment
+import com.instructure.pandautils.navigation.WebViewRouter
 import com.instructure.pandautils.utils.children
 import com.instructure.pandautils.utils.toast
 import com.instructure.pandautils.views.CanvasWebView
 import com.instructure.pandautils.views.SpacesItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_homeroom.*
+import kotlinx.android.synthetic.main.fragment_homeroom.view.*
 import kotlinx.android.synthetic.main.item_announcement.view.*
 import javax.inject.Inject
 
+@ScreenView(SCREEN_VIEW_K5_HOMEROOM)
 @AndroidEntryPoint
 class HomeroomFragment : Fragment() {
 
     @Inject
     lateinit var homeroomRouter: HomeroomRouter
+
+    @Inject
+    lateinit var webViewRouter: WebViewRouter
 
     private val viewModel: HomeroomViewModel by viewModels()
 
@@ -73,6 +83,11 @@ class HomeroomFragment : Fragment() {
         val decoration = SpacesItemDecoration(spacing.toInt())
         coursesRecyclerView.addItemDecoration(decoration)
         setUpRecyclerViewSpan()
+
+        homeroomSwipeRefreshLayout.setOnRefreshListener {
+            viewModel.refresh()
+            (childFragmentManager.findFragmentByTag("notifications_fragment") as DashboardNotificationsFragment).refresh()
+        }
     }
 
     private fun setUpRecyclerViewSpan() {
@@ -129,13 +144,13 @@ class HomeroomFragment : Fragment() {
         announcementWebView.settings.loadWithOverviewMode = true
         announcementWebView.canvasWebViewClientCallback = object : CanvasWebView.CanvasWebViewClientCallback {
             override fun routeInternallyCallback(url: String) {
-                homeroomRouter.routeInternally(url)
+                webViewRouter.routeInternally(url)
             }
 
-            override fun canRouteInternallyDelegate(url: String): Boolean = homeroomRouter.canRouteInternally(url)
+            override fun canRouteInternallyDelegate(url: String): Boolean = webViewRouter.canRouteInternally(url)
 
             override fun openMediaFromWebView(mime: String, url: String, filename: String) {
-                homeroomRouter.openMedia(url)
+                webViewRouter.openMedia(url)
             }
 
             override fun onPageStartedCallback(webView: WebView, url: String) = Unit

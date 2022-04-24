@@ -1053,6 +1053,7 @@
     <string name="addChildErrorMessage">تعذر الإقران. تأكد من أن رمز الإقران صحيح وفي إطار الحد الزمني للاستخدام.</string>
     <string name="gradeComplete">مكتمل</string>
     <string name="gradeIncomplete">غير مكتمل</string>
+
     <!--Teacher Strings-->
     <string name="postPolicyTitle">نشر الإعدادات</string>
     <string name="postGradesTab">نشر التقادير</string>
@@ -1230,24 +1231,83 @@
     <string name="viewPreviousAnnouncements">عرض إعلانات سابقة</string>
     <string name="homeroomError">فشل تحميل جلسة التسجيل</string>
     <string name="homeroomRefreshFail">فشل تحديث جلسة التسجيل</string>
-
     <string name="nothingDueToday">لا شيء مستحق اليوم</string>
     <string name="dueToday">%1$s مستحق اليوم</string>
     <string name="missing">%1$s مفقود</string>
     <string name="homeroomEmptyTitle">مرحبًا!</string>
     <string name="homeroomEmptyMessage">تظهر الموضوعات هنا.</string>
     <string name="homeroomNoSubjects">ليس لديك موضوعات في الوقت الحالي.</string>
+    <string name="settingsElementaryViewSubtitle">يتطلب إعادة تشغيل التطبيق</string>
+    <string name="gradesSelect">تحديد</string>
+    <string name="selectGradingPeriod">تحديد فترة التقييم</string>
+    <string name="currentGradingPeriod">فترة التقدير الحالية</string>
+    <string name="failedToLoadGrades">فشل تحميل الدرجات</string>
+    <string name="failedToLoadGradesForGradingPeriod">تعذر تحميل التقديرات لفترة التقدير</string>
+    <string name="failedToRefreshGrades">تعذر تحديث التقديرات</string>
+    <string name="noGradesToDisplay">لا توجد تقديرات للعرض</string>
+    <string name="notGraded">لم يتم التقييم</string>
+    <string name="a11y_gradingPeriodSelectorClickDescription">تغيير فترة التقدير</string>
+    <string name="a11y_gradesNotAvailableContentDescription">التقديرات غير متاحة</string>
+    <string name="bottomBarHomeroom">جلسة التسجيل</string>
 
-
+    <string name="settingsHomeroomView">عرض جلسة التسجيل</string>
+    <string name="importantLinksTitle">الروابط الهامة</string>
+    <string name="studentApplications">تقديمات الطالب</string>
+    <string name="staffContactInfo">معلومات الاتصال الخاصة بالعاملين</string>
+    <string name="chooseACourse">اختر مساقًا</string>
+    <string name="webViewImportantLinksTitle">الروابط الهامة</string>
+    <string name="staffRoleTeacher">المعلم</string>
+    <string name="staffRoleTeacherAssistant">المعلم المساعد</string>
+    <string name="resourcesEmptyMessage">مواردك تظهر هنا.</string>
+    <string name="failedToLoadResources">فشل تحميل الموارد</string>
+    <string name="failedToRefreshResources">فشل تحديث الموارد</string>
     <string name="open_alternate_view">فتح طريقة عرض بديلة أكثر سهولة</string>
 
     <string name="a11y_content_description_message_recipients">المتلقون</string>
     <string name="a11y_content_description_inbox_subject">الموضوع</string>
     <string name="a11y_content_description_inbox_course_spinner">حدد مساقًا، %s</string>
+
     <string name="speedGraderAnonymousSubmissionMessage">استجابات هذا الطالب مخفية لأن هذه المهمة مجهولة الاسم.</string>
 
-    <string name="studentAnnotationUnsupported">التعليق التوضيحي للطالب (غير مدعوم)</string>
-    <string name="studentAnnotationUnsupportedDescription">التعليق التوضيحي للطالب غير مدعوم حاليًا على الأجهزة المحمولة.</string>
-    <string name="unsupportedSubmissionType">نوع إرسال غير مدعوم</string>
-    <string name="studentAnnotationUnsupportedMessage">لا يمكن عرض الإرسال، لأن التعليق التوضيحي للطالب غير مدعوم حاليًا على الأجهزة المحمولة.</string>
+    <string name="schedule_marked_as_done">قمت بتمييزه بأنه تم.</string>
+    <string name="error_saving_assignment_closed_grading_period">يتعذر تغيير تاريخ استحقاق عند استحقاقه في فترة منح مغلقة لمنح العلامات.</string>
+    <string name="a11y_content_description_schedule_jump_to_today">ابدأ اليوم</string>
+    <string name="a11y_contact_info_content_description">%1$s، %2$s</string>
+    <string name="a11y_contact_info_click_description">إرسال رسالة</string>
+    <string name="somethingWentWrong">حدث خطأ ما</string>
+    <string name="failedToLoadQuiz">فشل تحميل الاختبار</string>
+    <string name="failedToLoadSubmission">فشل تحميل الإرسال</string>
+    <string name="studentAnnotationToolbarTitle">تعليق توضيحي لطالب</string>
+    <string name="submissionTypeStudentAnnotation">تعليق توضيحي لطالب</string>
+    <string name="gradesNoDueDate">بلا تاريخ استحقاق</string>
+    <string name="importantDatesNoDueDate">بلا تاريخ استحقاق</string>
+    <string name="missingAssignment">مفقود</string>
+    <string name="dontSave">عدم الحفظ</string>
+    <string name="textSubmissionExitConfirmationTitle">حفظ المسودة؟</string>
+    <string name="textSubmissionExitConfirmationMessage">وإلا لن يتم حفظ التغييرات</string>
+    <string name="submissionDraftAvailableSubtitle">اضغط هنا للمتابعة</string>
+    <string name="submissionDraftAvailableTitle">المسودة متوفرة</string>
+    <string name="errorLoadingSubmission">حدث خطأ أثناء تحميل الإرسال</string>
+    <string name="loadFullContent">اضغط للاطلاع على المحتوى الكامل</string>
+    <string name="dashboardTabImportantDates">التواريخ الهامة</string>
+    <string name="importantDatesEmptyTitle">لا توجد تواريخ هامة</string>
+    <string name="important_dates">التواريخ الهامة</string>
+
+    <string name="toolbarCommentLibrary">مكتبة التعليقات</string>
+    <string name="commentLibraryNoSuggestions">لا توجد مقترحات متاحة</string>
+    <string name="speedGraderCommentHint">التعليق</string>
+    <string name="a11y_schedule_marked_as_done">تم وضع علامة تم على %s</string>
+    <string name="a11y_error_occured">حدث خطأ، يُرجى إعادة المحاولة.</string>
+    <string name="a11y_content_description_accept_invite">قبول الدعوة</string>
+    <string name="a11y_content_description_decline_invite">رفض الدعوة</string>
+    <string name="no_notifications_to_show">لا توجد إعلامات متاحة للإظهار</string>
+
+    <string name="documentScanningTitle">مسح المستند</string>
+    <string name="filter_name_color">اللون</string>
+    <string name="filter_name_grayscale">التدرج الرمادي</string>
+    <string name="filter_name_monochrome">أحادي اللون</string>
+    <string name="filter_name_original">الأصلي</string>
+    <string name="noCompatibleAppInstalled">لا توجد أي تطبيقات مثبتة على جهازك قادرة على فتح هذا الرابط.</string>
+    <string name="anonymousDiscussionNotSupported">النقاشات المجهولة غير مدعومة حاليًا على الأجهزة المحمولة. الفتح في المستعرض لعرض النقاش.</string>
+    <string name="discussionOpenInBrowser">الفتح في المستعرض</string>
 </resources>

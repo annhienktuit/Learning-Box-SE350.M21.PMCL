@@ -42,18 +42,21 @@
 
     <string name="notificationChannelNameFileUploadsName">Notificações de transferência</string>
     <string name="notificationChannelNameFileUploadsDescription">Notificações de exrã para transferências em andamento.</string>
+
+
     <!-- Turn in Files -->
     <string name="addFile">Adicionar ficheiro</string>
+
     <string name="fromCamera">Câmara</string>
     <string name="fromGallery">Galeria</string>
     <string name="fromDevice">Dispositivo</string>
+    <string name="fromDocumentScanning">Scanner</string>
     <string name="fromOtherApplication">Outro</string>
     <string name="Domain">Domínio</string>
     <string name="files">Ficheiros</string>
     <string name="file">Ficheiro</string>
     <string name="fileTalkBack">Ficheiro %s</string>
     <string name="folderTalkBack">Pasta %s</string>
-
     <string name="addItem">Adicionar Item</string>
     <string name="assignment">Tarefa</string>
     <string name="attachedFiles">Ficheiros Anexados</string>
@@ -97,6 +100,7 @@
     <string name="assignmentSubmissionUpload">Enviando envio para %s</string>
     <string name="assignmentSubmissionError">A submissão falhou para %s</string>
     <string name="assignmentSubmissionComplete">Submetido com sucesso %s</string>
+
     <!--Errors-->
     <string name="errorOccurred">Ocorreu um erro inesperado.</string>
     <string name="serverError">Ocorreu um erro no servidor.</string>
@@ -107,7 +111,7 @@
     <string name="errorGettingPhoto">Ocorreu um erro ao obter a foto. É favor tentar novamente.</string>
     <string name="errorTextMissing">Adicionar algum texto para enviar uma mensagem</string>
 
-    <string name="fileUploadNotSupported">Não pode carregar ficheiros para a atribuição escolhida.</string>
+    <string name="fileUploadNotSupported">Não pode carregar ficheiros para a tarefa escolhida.</string>
     <string name="noCourseSelected">Por favor selecione uma disciplina</string>
     <string name="selectCourse">Selecionar uma disciplina</string>
     <string name="selectAssignment">Selecionar uma tarefa</string>
@@ -183,9 +187,9 @@
     <string name="noModulesSubtext">Parece que não há nenhum módulo criado ainda.</string>
     <string name="noPages">Sem páginas</string>
     <string name="noPagesSubtext">Parece que nenhuma página foi criada ainda.</string>
-
     <string name="modulesLockedSubtext">Módulos foram definidos para esta disciplina.</string>
     <string name="modulesLocked">Algo deu errado</string>
+
     <!--General-->
     <string name="yes">Sim</string>
     <string name="no">Não</string>
@@ -260,8 +264,8 @@
     <string name="utils_discussionsDeleteWarning">Tem certeza de que deseja eliminar esta resposta?</string>
     <string name="utils_availableToLabel">Disponível para:</string>
     <string name="utils_availableFromLabel">Disponível a partir de:</string>
-    <string name="utils_dueDateHeaderLabel">Vencimento</string>
-    <string name="utils_dueLabel">Devido:</string>
+    <string name="utils_dueDateHeaderLabel">Data limite</string>
+    <string name="utils_dueLabel">Data limite:</string>
     <string name="utils_delete">Eliminar</string>
     <string name="utils_dueDateAtTime" formatted="false">Termina %1s a %2s</string>
     <string name="utils_noDateFiller">--</string>
@@ -368,7 +372,7 @@
     <string name="utils_noApps">Seu dispositivo não possui nenhuma aplicação instalada que possa manipular esse ficheiro.</string>
     <string name="utils_errorGettingPhoto">Ocorreu um erro ao obter a foto. É favor tentar novamente.</string>
     <string name="utils_oneOrMoreExtensionNotAllowed">Um ou mais ficheiros tem uma extensão de ficheiro que não é permitida</string>
-    <string name="utils_fileUploadNotSupported">Você não pode carregar ficheiros para a atribuição selecionada.</string>
+    <string name="utils_fileUploadNotSupported">Você não pode carregar ficheiros para a tarefa selecionada.</string>
     <string name="utils_noFilesUploaded">Você não selecionou nenhum ficheiro.</string>
     <string name="utils_attachments">Anexos</string>
     <string name="utils_uploadTo">Carregar Para </string>
@@ -379,13 +383,14 @@
     <string name="utils_uploadToSubmissionComment">Carregar para comentário de envio</string>
     <string name="utils_attachFile">Anexar um ficheiro</string>
     <string name="utils_with">com</string>
+
     <string name="notificationPrimaryInboxTitle">Notificação Canvas</string>
     <string name="notificationChannelNamePrimary">Notificações gerais do Canvas</string>
     <string name="notificationChannelDescriptionPrimary">A configuração adicional das notificações pode ser feita dentro da seção de Preferências de Notificação de Canvas.</string>
-
     <plurals name="notificationGroupContent">
         <item quantity="other">%d novas notificações</item>
     </plurals>
+
     <string name="copyLinkAddress">Copiar endereço da ligação</string>
     <string name="copyLink">Copiar ligação</string>
     <string name="linkCopied">Ligação copiada</string>
@@ -415,7 +420,6 @@
     <string name="image_uploading">Carregamento de imagem...</string>
     <string name="image_upload_error">Erro ao carregar imagem</string>
     <string name="retry">Tentar novamente</string>
-
     <string name="search">Pesquisar</string>
     <string name="searchAssignmentsHint">Pesquisar Tarefas</string>
     <string name="searchAnnouncementsHint">Pesquisar Anúncios</string>
@@ -423,11 +427,62 @@
     <string name="searchPagesHint">Pesquisar Páginas </string>
     <string name="searchQuizzesHint">Pesquisar testes</string>
     <string name="noItemsMatchingQuery">Nenhum item corresponde \"%s\"</string>
+
     <string name="selected">Selecionado</string>
 
     <string name="notificationChannelNameInAppUpdate">Notificações de atualização de aplicações</string>
     <string name="notificationChannelDescriptionInAppUpdate">Notificações de lona para atualizações no Canvas.</string>
     <string name="appUpdateReadyTitle">Aplicação pronta a actualizar</string>
     <string name="appUpdateReadyDescription">Reiniciar a aplicação para instalar a nova versão</string>
+    <string name="nothing_planned_yet">Nada planeado ainda</string>
+    <string name="schedule_tag_graded">Classificado</string>
+    <plurals name="schedule_tag_replies">
+        <item quantity="one">%d Responder</item>
+        <item quantity="other">%d Respostas></item>
+    </plurals>
+    <string name="schedule_tag_feedback">Resposta</string>
+    <string name="schedule_tag_late">Atrasado</string>
+    <string name="schedule_tag_redo">Refazer</string>
+    <string name="schedule_tag_excused">Desculpado</string>
+    <string name="tomorrow">Amanhã</string>
+    <string name="yesterday">Ontem</string>
+    <string name="schedule_calendar_event_due_text">Em %s</string>
+    <string name="schedule_calendar_event_interval_text">%1$s a %2$s</string>
+    <string name="schedule_todo_due_text">Tarefa: %s</string>
+    <string name="schedule_due_text">Data limite: %s</string>
+    <string name="show_missing_items_title">Mostrar %d itens em falta</string>
+    <string name="hide_missing_items_title">Ocultar %d itens em falta</string>
+    <string name="schedule_error_message">Incapaz de ir buscar a sua agenda</string>
+    <string name="schedule_todo_title">A Fazer</string>
+    <plurals name="schedule_points">
+        <item quantity="zero">%s pt</item>
+        <item quantity="one">%s pt</item>
+        <item quantity="other">%s pts</item>
+    </plurals>
 
+    <plurals name="a11y_schedule_points">
+        <item quantity="zero">%.1f pontos</item>
+        <item quantity="one">%.1f ponto</item>
+        <item quantity="other">%.1f pontos</item>
+    </plurals>
+    <string name="schedule_all_day_event_text">Dia todo</string>
+    <string name="schedule_tag_missing">Em falta</string>
+    <string name="previous_week">Semana Anterior</string>
+    <string name="next_week">Próxima Semana</string>
+    <string name="a11y_schedule_day_header_content_description">%1$s, %2$s</string>
+    <string name="a11y_schedule_course_header_content_description">Disciplina %s</string>
+    <string name="a11y_announcement">Anúncio</string>
+    <string name="a11y_discussion_topic">Discussão</string>
+    <string name="a11y_calendar_event">Evento do calendário</string>
+    <string name="a11y_assignment">Tarefa</string>
+    <string name="a11y_planner_note">Nota do planeador</string>
+    <string name="a11y_quiz">Teste</string>
+    <string name="a11y_todo">A Fazer</string>
+    <string name="a11y_page">Página</string>
+    <string name="a11y_marked_as_done">Marcado como terminado</string>
+    <string name="a11y_not_marked_as_done">Não marcado como terminado</string>
+    <string name="a11y_mark_as_done">Marcar como terminado</string>
+    <string name="a11y_mark_as_not_done">mark_as_not_done</string>
+    <string name="error_loading_course_details">Ah não! Ocorreu um erro ao carregar os detalhes da disciplina.</string>
+    <string name="a11y_schedule_marked_as_not_done">%s marcado como não feito</string>
 </resources>

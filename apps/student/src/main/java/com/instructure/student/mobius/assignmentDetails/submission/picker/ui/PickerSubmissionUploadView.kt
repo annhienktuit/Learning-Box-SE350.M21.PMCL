@@ -61,6 +61,7 @@ class PickerSubmissionUploadView(inflater: LayoutInflater, parent: ViewGroup, va
         sourceCamera.setOnClickListener { consumer?.accept(PickerSubmissionUploadEvent.CameraClicked) }
         sourceDevice.setOnClickListener { consumer?.accept(PickerSubmissionUploadEvent.SelectFileClicked) }
         sourceGallery.setOnClickListener { consumer?.accept(PickerSubmissionUploadEvent.GalleryClicked) }
+        sourceDocumentScanning.setOnClickListener { consumer?.accept(PickerSubmissionUploadEvent.DocumentScanningClicked) }
     }
 
     override fun onConnect(output: Consumer<PickerSubmissionUploadEvent>) {
@@ -102,9 +103,9 @@ class PickerSubmissionUploadView(inflater: LayoutInflater, parent: ViewGroup, va
 
     private fun renderEmpty() {
         pickerEmptyView.setVisible(true)
-        pickerEmptyView.setListEmpty()
         pickerEmptyView.setImageVisible(true)
         pickerEmptyView.setEmptyViewImage(context.getDrawableCompat(R.drawable.ic_panda_choosefile))
+        pickerEmptyView.setListEmpty()
         pickerEmptyView.setTitleText(R.string.chooseFile)
         pickerEmptyView.setMessageText(
             if (mode.isForComment) R.string.chooseFileForCommentSubtext else R.string.chooseFileSubtext

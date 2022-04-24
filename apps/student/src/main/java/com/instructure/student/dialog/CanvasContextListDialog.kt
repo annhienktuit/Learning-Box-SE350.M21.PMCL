@@ -30,10 +30,13 @@ import com.instructure.canvasapi2.models.CanvasContext
 import com.instructure.canvasapi2.models.Course
 import com.instructure.canvasapi2.models.Group
 import com.instructure.canvasapi2.utils.hasActiveEnrollment
+import com.instructure.canvasapi2.utils.isNotDeleted
 import com.instructure.canvasapi2.utils.isValidTerm
 import com.instructure.canvasapi2.utils.weave.awaitApis
 import com.instructure.canvasapi2.utils.weave.catch
 import com.instructure.canvasapi2.utils.weave.tryWeave
+import com.instructure.pandautils.analytics.SCREEN_VIEW_CANVAS_CONTEXT_LIST
+import com.instructure.pandautils.analytics.ScreenView
 import com.instructure.pandautils.utils.dismissExisting
 import com.instructure.pandautils.utils.setGone
 import com.instructure.pandautils.utils.toast
@@ -44,6 +47,7 @@ import kotlinx.android.synthetic.main.dialog_canvas_context_list.view.*
 import kotlinx.coroutines.Job
 import kotlin.properties.Delegates
 
+@ScreenView(SCREEN_VIEW_CANVAS_CONTEXT_LIST)
 class CanvasContextListDialog : AppCompatDialogFragment() {
 
     init {

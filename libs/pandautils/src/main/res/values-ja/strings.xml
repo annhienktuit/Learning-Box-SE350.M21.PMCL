@@ -42,18 +42,21 @@
 
     <string name="notificationChannelNameFileUploadsName">アップロード通知</string>
     <string name="notificationChannelNameFileUploadsDescription">アップロード中の Canvas 通知。</string>
+
+
     <!-- Turn in Files -->
     <string name="addFile">ファイルを追加</string>
+
     <string name="fromCamera">カメラ</string>
     <string name="fromGallery">ギャラリー</string>
     <string name="fromDevice">デバイス</string>
+    <string name="fromDocumentScanning">スキャナー</string>
     <string name="fromOtherApplication">その他</string>
     <string name="Domain">ドメイン</string>
     <string name="files">ファイル</string>
     <string name="file">ファイル</string>
     <string name="fileTalkBack">ファイル%s</string>
     <string name="folderTalkBack">フォルダ%s</string>
-
     <string name="addItem">アイテム</string>
     <string name="assignment">課題</string>
     <string name="attachedFiles">添付されたファイル</string>
@@ -97,6 +100,7 @@
     <string name="assignmentSubmissionUpload">%s の提出をアップロードしています</string>
     <string name="assignmentSubmissionError">%s の提出に失敗しました</string>
     <string name="assignmentSubmissionComplete">%s の提出に成功しました</string>
+
     <!--Errors-->
     <string name="errorOccurred">予期しないエラーが発生しました。</string>
     <string name="serverError">サーバーエラーが発生しました。</string>
@@ -183,9 +187,9 @@
     <string name="noModulesSubtext">まだ作成されているモジュールはないようです。</string>
     <string name="noPages">ページなし</string>
     <string name="noPagesSubtext">まだページが作成されていないようです。</string>
-
     <string name="modulesLockedSubtext">このコースではモジュールが無効になっています。</string>
     <string name="modulesLocked">なにかが失敗しました</string>
+
     <!--General-->
     <string name="yes">はい</string>
     <string name="no">いいえ</string>
@@ -376,13 +380,14 @@
     <string name="utils_uploadToSubmissionComment">コメント送信をアップロード</string>
     <string name="utils_attachFile">ファイルを添付する</string>
     <string name="utils_with">と</string>
+
     <string name="notificationPrimaryInboxTitle">Canvas 通知</string>
     <string name="notificationChannelNamePrimary">一般的な Canvas 通知</string>
     <string name="notificationChannelDescriptionPrimary">通知の詳細設定は、Canvas キャンバス通知設定のセクションで行うことができます。</string>
-
     <plurals name="notificationGroupContent">
         <item quantity="other">%dの新規通知</item>
     </plurals>
+
     <string name="copyLinkAddress">リンクアドレスをコピー</string>
     <string name="copyLink">リンクをコピー</string>
     <string name="linkCopied">リンクがコピーされました</string>
@@ -412,7 +417,6 @@
     <string name="image_uploading">画像をアップロード中...</string>
     <string name="image_upload_error">画像アップロードエラー</string>
     <string name="retry">再試行</string>
-
     <string name="search">検索</string>
     <string name="searchAssignmentsHint">課題の検索</string>
     <string name="searchAnnouncementsHint">お知らせ検索</string>
@@ -420,11 +424,59 @@
     <string name="searchPagesHint">ページ検索</string>
     <string name="searchQuizzesHint">クイズ検索</string>
     <string name="noItemsMatchingQuery">\"%s\"にマッチするアイテムなし</string>
+
     <string name="selected">選択されました</string>
 
     <string name="notificationChannelNameInAppUpdate">アプリの更新通知</string>
     <string name="notificationChannelDescriptionInAppUpdate">アプリ内更新の Canvas 通知。</string>
     <string name="appUpdateReadyTitle">更新の準備ができているアプリ</string>
     <string name="appUpdateReadyDescription">アプリを再開して、新しいバージョンをインストールする</string>
+    <string name="nothing_planned_yet">計画はまだありません</string>
+    <string name="schedule_tag_graded">採点済み</string>
+    <plurals name="schedule_tag_replies">
+        <item quantity="other">%d の返信></item>
+    </plurals>
+    <string name="schedule_tag_feedback">フィードバック</string>
+    <string name="schedule_tag_late">提出遅れ</string>
+    <string name="schedule_tag_redo">やり直し</string>
+    <string name="schedule_tag_excused">免除</string>
+    <string name="tomorrow">明日</string>
+    <string name="yesterday">昨日</string>
+    <string name="schedule_calendar_event_due_text">%sで</string>
+    <string name="schedule_calendar_event_interval_text">%1$sから%2$s</string>
+    <string name="schedule_todo_due_text">タスク：%s</string>
+    <string name="schedule_due_text">期限：%s</string>
+    <string name="show_missing_items_title">%d欠如アイテムを表示する</string>
+    <string name="hide_missing_items_title">%d欠如アイテムを非表示にする</string>
+    <string name="schedule_error_message">スケジュールを取得できません</string>
+    <string name="schedule_todo_title">タスク</string>
+    <plurals name="schedule_points">
+        <item quantity="zero">%s 点</item>
+        <item quantity="other">%s 点</item>
+    </plurals>
 
+    <plurals name="a11y_schedule_points">
+        <item quantity="zero">%.1f 点</item>
+        <item quantity="other">%.1f 点</item>
+    </plurals>
+    <string name="schedule_all_day_event_text">全日</string>
+    <string name="schedule_tag_missing">提出なし</string>
+    <string name="previous_week">前の週</string>
+    <string name="next_week">次週</string>
+    <string name="a11y_schedule_day_header_content_description">%1$s、%2$s</string>
+    <string name="a11y_schedule_course_header_content_description">コース%s</string>
+    <string name="a11y_announcement">発表</string>
+    <string name="a11y_discussion_topic">ディスカッション</string>
+    <string name="a11y_calendar_event">予定表のイベント</string>
+    <string name="a11y_assignment">課題</string>
+    <string name="a11y_planner_note">計画者のメモ</string>
+    <string name="a11y_quiz">クイズ</string>
+    <string name="a11y_todo">タスク</string>
+    <string name="a11y_page">ページ</string>
+    <string name="a11y_marked_as_done">完了としてマークする</string>
+    <string name="a11y_not_marked_as_done">完了とマークされていない</string>
+    <string name="a11y_mark_as_done">完了にする</string>
+    <string name="a11y_mark_as_not_done">mark_as_not_done</string>
+    <string name="error_loading_course_details">エラーです！コース詳細の読み込み中にエラーが発生しました：</string>
+    <string name="a11y_schedule_marked_as_not_done">%s完了とマークされていない</string>
 </resources>

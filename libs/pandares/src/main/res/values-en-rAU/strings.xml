@@ -1176,24 +1176,83 @@
     <string name="viewPreviousAnnouncements">View Previous Announcements</string>
     <string name="homeroomError">Failed to load Homeroom</string>
     <string name="homeroomRefreshFail">Failed to refresh Homeroom</string>
-
     <string name="nothingDueToday">Nothing Due Today</string>
     <string name="dueToday">%1$s due today</string>
     <string name="missing">%1$s missing</string>
     <string name="homeroomEmptyTitle">Welcome!</string>
     <string name="homeroomEmptyMessage">Your subjects show up here.</string>
     <string name="homeroomNoSubjects">You currently have no subjects.</string>
+    <string name="settingsElementaryViewSubtitle">Requires app restart</string>
+    <string name="gradesSelect">Select</string>
+    <string name="selectGradingPeriod">Select Grading Period</string>
+    <string name="currentGradingPeriod">Current Grading Period</string>
+    <string name="failedToLoadGrades">Failed to load marks</string>
+    <string name="failedToLoadGradesForGradingPeriod">Failed to load grades for grading period</string>
+    <string name="failedToRefreshGrades">Failed to refresh grades</string>
+    <string name="noGradesToDisplay">No grades to display</string>
+    <string name="notGraded">Not Marked</string>
+    <string name="a11y_gradingPeriodSelectorClickDescription">Change grading period</string>
+    <string name="a11y_gradesNotAvailableContentDescription">Grades not available</string>
+    <string name="bottomBarHomeroom">Homeroom</string>
 
-
+    <string name="settingsHomeroomView">Homeroom View</string>
+    <string name="importantLinksTitle">Important Links</string>
+    <string name="studentApplications">Student Applications</string>
+    <string name="staffContactInfo">Staff Contact Info</string>
+    <string name="chooseACourse">Choose a Course</string>
+    <string name="webViewImportantLinksTitle">Important Links</string>
+    <string name="staffRoleTeacher">Teacher</string>
+    <string name="staffRoleTeacherAssistant">Teaching Assistant</string>
+    <string name="resourcesEmptyMessage">Your resources show up here.</string>
+    <string name="failedToLoadResources">Failed to load resources</string>
+    <string name="failedToRefreshResources">Failed to refresh resources</string>
     <string name="open_alternate_view">Open a more accessible alternative view</string>
 
     <string name="a11y_content_description_message_recipients">Recipients</string>
     <string name="a11y_content_description_inbox_subject">Subject</string>
     <string name="a11y_content_description_inbox_course_spinner">Select a course, %s</string>
+
     <string name="speedGraderAnonymousSubmissionMessage">This student\'s responses are hidden because this assignment is anonymous.</string>
 
-    <string name="studentAnnotationUnsupported">Student Annotation (Unsupported)</string>
-    <string name="studentAnnotationUnsupportedDescription">Student Annotation is currently not supported on mobile.</string>
-    <string name="unsupportedSubmissionType">Unsupported Submission Type</string>
-    <string name="studentAnnotationUnsupportedMessage">Submission cannot be displayed, because Student Annotation is currently not supported on mobile.</string>
+    <string name="schedule_marked_as_done">You\'ve marked it as done.</string>
+    <string name="error_saving_assignment_closed_grading_period">Cannot change the due date when due in a closed grading period.</string>
+    <string name="a11y_content_description_schedule_jump_to_today">Jump to Today</string>
+    <string name="a11y_contact_info_content_description">%1$s, %2$s</string>
+    <string name="a11y_contact_info_click_description">send message</string>
+    <string name="somethingWentWrong">Something went wrong</string>
+    <string name="failedToLoadQuiz">Failed to load quiz</string>
+    <string name="failedToLoadSubmission">Failed to load submission</string>
+    <string name="studentAnnotationToolbarTitle">Student Annotation</string>
+    <string name="submissionTypeStudentAnnotation">Student Annotation</string>
+    <string name="gradesNoDueDate">No due date</string>
+    <string name="importantDatesNoDueDate">No due date</string>
+    <string name="missingAssignment">Missing</string>
+    <string name="dontSave">Don\'t save</string>
+    <string name="textSubmissionExitConfirmationTitle">Save draft?</string>
+    <string name="textSubmissionExitConfirmationMessage">Your changes will not be saved otherwise</string>
+    <string name="submissionDraftAvailableSubtitle">Tap here to continue</string>
+    <string name="submissionDraftAvailableTitle">Draft Available</string>
+    <string name="errorLoadingSubmission">An error occurred while loading submission</string>
+    <string name="loadFullContent">Tap to see full content</string>
+    <string name="dashboardTabImportantDates">Important Dates</string>
+    <string name="importantDatesEmptyTitle">No important dates</string>
+    <string name="important_dates">Important Dates</string>
+
+    <string name="toolbarCommentLibrary">Comment Library</string>
+    <string name="commentLibraryNoSuggestions">No suggestions available</string>
+    <string name="speedGraderCommentHint">Comment</string>
+    <string name="a11y_schedule_marked_as_done">%s marked as done</string>
+    <string name="a11y_error_occured">Error occurred, please try again.</string>
+    <string name="a11y_content_description_accept_invite">Accept invite</string>
+    <string name="a11y_content_description_decline_invite">Decline invite</string>
+    <string name="no_notifications_to_show">No notifications to show</string>
+
+    <string name="documentScanningTitle">Document Scanning</string>
+    <string name="filter_name_color">Colour</string>
+    <string name="filter_name_grayscale">Grayscale</string>
+    <string name="filter_name_monochrome">Monochrome</string>
+    <string name="filter_name_original">Original</string>
+    <string name="noCompatibleAppInstalled">Your device does not have any applications installed that can open this link.</string>
+    <string name="anonymousDiscussionNotSupported">Anonymous discussions are currently not supported on mobile. Open in browser to view discussion.</string>
+    <string name="discussionOpenInBrowser">Open in browser</string>
 </resources>

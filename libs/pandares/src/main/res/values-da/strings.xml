@@ -1176,24 +1176,83 @@
     <string name="viewPreviousAnnouncements">Se tidligere beskeder</string>
     <string name="homeroomError">Kunne ikke indlæse Homeroom</string>
     <string name="homeroomRefreshFail">Kunne ikke opdatere Homeroom</string>
-
     <string name="nothingDueToday">Intet forfalder i dag</string>
     <string name="dueToday">%1$s forfalder i dag</string>
     <string name="missing">%1$s mangler</string>
     <string name="homeroomEmptyTitle">Velkommen!</string>
     <string name="homeroomEmptyMessage">Dine emner vises her.</string>
     <string name="homeroomNoSubjects">Du har i øjeblikket ingen emner.</string>
+    <string name="settingsElementaryViewSubtitle">Kræver genstart af app</string>
+    <string name="gradesSelect">Vælg</string>
+    <string name="selectGradingPeriod">Vælg karakterperiode</string>
+    <string name="currentGradingPeriod">Nuværende karakterperiode</string>
+    <string name="failedToLoadGrades">Kunne ikke indlæse karakterer</string>
+    <string name="failedToLoadGradesForGradingPeriod">Kunne ikke indlæse karakterer for karakterperioden</string>
+    <string name="failedToRefreshGrades">Kunne ikke opdatere karakterer</string>
+    <string name="noGradesToDisplay">Ingen karakterer at vise</string>
+    <string name="notGraded">Ikke bedømt</string>
+    <string name="a11y_gradingPeriodSelectorClickDescription">Skift karakterperiode</string>
+    <string name="a11y_gradesNotAvailableContentDescription">Karakterer ikke tilgængelige</string>
+    <string name="bottomBarHomeroom">Klasselokale</string>
 
-
+    <string name="settingsHomeroomView">Klasseværelsevisning</string>
+    <string name="importantLinksTitle">Vigtige links</string>
+    <string name="studentApplications">Applikationer for studerende</string>
+    <string name="staffContactInfo">Kontaktoplysninger for personale</string>
+    <string name="chooseACourse">Vælg et fag</string>
+    <string name="webViewImportantLinksTitle">Vigtige links</string>
+    <string name="staffRoleTeacher">Lærer</string>
+    <string name="staffRoleTeacherAssistant">Undervisningsassistent</string>
+    <string name="resourcesEmptyMessage">Dine ressourcer vises her.</string>
+    <string name="failedToLoadResources">Kunne ikke indlæse ressourcer</string>
+    <string name="failedToRefreshResources">Kunne ikke opdatere ressourcer</string>
     <string name="open_alternate_view">Åbn en mere tilgængelig alternativ visning</string>
 
     <string name="a11y_content_description_message_recipients">Modtagere</string>
     <string name="a11y_content_description_inbox_subject">Emne</string>
     <string name="a11y_content_description_inbox_course_spinner">Vælg et fag, %s</string>
+
     <string name="speedGraderAnonymousSubmissionMessage">Den studerendes svar er skjult, fordi denne opgave er anonym.</string>
 
-    <string name="studentAnnotationUnsupported">Studerendes anmærkninger (ikke understøttet)</string>
-    <string name="studentAnnotationUnsupportedDescription">Studerendes anmærkninger understøttes i øjeblikket ikke på mobil.</string>
-    <string name="unsupportedSubmissionType">Ikke-understøttet afleveringsform</string>
-    <string name="studentAnnotationUnsupportedMessage">Aflevering kan ikke vises, fordi studerendes anmærkninger i øjeblikket ikke understøttes på mobil.</string>
+    <string name="schedule_marked_as_done">Du har markeret det som udført.</string>
+    <string name="error_saving_assignment_closed_grading_period">Kan ikke ændre afleveringsdatoen, når den forfalder i en lukket karakterperiode</string>
+    <string name="a11y_content_description_schedule_jump_to_today">Spring til i dag</string>
+    <string name="a11y_contact_info_content_description">%1$s, %2$s</string>
+    <string name="a11y_contact_info_click_description">send besked</string>
+    <string name="somethingWentWrong">Noget gik galt</string>
+    <string name="failedToLoadQuiz">Indlæsning af test mislykkedes</string>
+    <string name="failedToLoadSubmission">Kunne ikke indlæse aflevering</string>
+    <string name="studentAnnotationToolbarTitle">Studerendes anmærkning</string>
+    <string name="submissionTypeStudentAnnotation">Studerendes anmærkning</string>
+    <string name="gradesNoDueDate">Ingen afleveringsdato</string>
+    <string name="importantDatesNoDueDate">Ingen afleveringsdato</string>
+    <string name="missingAssignment">Mangler</string>
+    <string name="dontSave">Gem ikke</string>
+    <string name="textSubmissionExitConfirmationTitle">Gem udkast?</string>
+    <string name="textSubmissionExitConfirmationMessage">Ellers gemmes dine ændringer ikke</string>
+    <string name="submissionDraftAvailableSubtitle">Tryk her for at fortsætte</string>
+    <string name="submissionDraftAvailableTitle">Udkast tilgængeligt</string>
+    <string name="errorLoadingSubmission">Der opstod en fejl under indlæsning af aflevering</string>
+    <string name="loadFullContent">Tryk for at se alt indholdet</string>
+    <string name="dashboardTabImportantDates">Vigtige datoer</string>
+    <string name="importantDatesEmptyTitle">Ingen vigtige datoer</string>
+    <string name="important_dates">Vigtige datoer</string>
+
+    <string name="toolbarCommentLibrary">Kommentarbibliotek</string>
+    <string name="commentLibraryNoSuggestions">Ingen forslag til rådighed</string>
+    <string name="speedGraderCommentHint">Kommentar</string>
+    <string name="a11y_schedule_marked_as_done">%s markeret som færdig</string>
+    <string name="a11y_error_occured">Der opstod en fejl, prøv igen.</string>
+    <string name="a11y_content_description_accept_invite">Accepter invitationen</string>
+    <string name="a11y_content_description_decline_invite">Afvis invitationen</string>
+    <string name="no_notifications_to_show">Ingen meddelelser at vise</string>
+
+    <string name="documentScanningTitle">Dokumentscanning</string>
+    <string name="filter_name_color">Farve</string>
+    <string name="filter_name_grayscale">Gråtoner</string>
+    <string name="filter_name_monochrome">Monokrom</string>
+    <string name="filter_name_original">Original</string>
+    <string name="noCompatibleAppInstalled">Din enhed har ikke nogen applikationer, der kan åbne dette link.</string>
+    <string name="anonymousDiscussionNotSupported">Anonyme diskussioner understøttes i øjeblikket ikke på mobil. Åbn i browseren for at se diskussionen.</string>
+    <string name="discussionOpenInBrowser">Åbn i browser</string>
 </resources>

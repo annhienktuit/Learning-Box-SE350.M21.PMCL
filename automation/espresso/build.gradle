@@ -15,10 +15,6 @@
  */
 
 buildscript {
-    // Define this once here because it will need to be reused later
-    // This needs to be the same as for consuming code, or else you will get a compilation error.
-    ext.kotlinVersion = "1.3.20"
-
     repositories {
         mavenCentral()
         google()
@@ -26,7 +22,7 @@ buildscript {
 
     dependencies {
         classpath 'com.android.tools.build:gradle:4.0.2'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath Plugins.KOTLIN
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
         classpath 'digital.wup:android-maven-publish:3.6.2'
     }
@@ -42,6 +38,8 @@ allprojects {
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'dagger.hilt.android.plugin'
 
 android {
     compileSdkVersion 28
@@ -90,10 +88,10 @@ dependencies {
     //
     // https://maven.google.com/com/android/support/test/espresso/espresso-core/3.0.0/espresso-core-3.0.0.pom
 
-    def runnerVersion = "1.1.1"
-    def rulesVersion = "1.1.1"
-    def espressoVersion = "3.1.1"
-    def junitVersion = "4.13.1"
+    def runnerVersion = "1.4.0"
+    def rulesVersion = "1.4.0"
+    def espressoVersion = "3.4.0"
+    def junitVersion = "4.13.2"
 
     // Update exclusions based on ./gradlew :app:androidDependencies
     implementation("androidx.test:runner:$runnerVersion") {
@@ -107,9 +105,10 @@ dependencies {
         exclude module: 'support-annotations'
     }
 
-    implementation "com.google.android.material:material:1.0.0"
+    implementation Libs.ANDROIDX_DESIGN
+    implementation Libs.ANDROIDX_SWIPE_REFRESH_LAYOUT
 
-    implementation 'com.google.code.gson:gson:2.8.0'
+    implementation Libs.GSON
 
     api "androidx.test.espresso:espresso-accessibility:$espressoVersion"
 
@@ -142,19 +141,25 @@ dependencies {
         exclude module: 'support-annotations'
     }
     api("junit:junit:$junitVersion")
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    implementation Libs.KOTLIN_STD_LIB
 
-    // Currently we can only get this from Jitpack, so we had to change the package name. It will be soon migrated to Maven Central.
-    api('com.github.AdevintaSpain:Barista:v2.4.0') {
+    api('com.adevinta.android:barista:4.2.0') {
         exclude group: 'com.android.support'
         exclude group: 'org.jetbrains.kotlin'
+        exclude group: 'androidx.test.espresso'
+        exclude group: 'androidx.test'
     }
 
     implementation project(':canvas-api-2')
     implementation 'com.github.javafaker:javafaker:0.18'
     /* Mock web server */
-    //implementation("com.squareup.okhttp3:mockwebserver:4.2.1") // Later version causes build conflicts
-    implementation("com.squareup.okhttp3:mockwebserver:3.13.1")
+    implementation("com.squareup.okhttp3:mockwebserver:${Versions.OKHTTP}")
+
+    /* DI */
+    implementation Libs.HILT
+    kapt Libs.HILT_COMPILER
+    implementation Libs.HILT_TESTING
+    kapt Libs.HILT_TESTING_COMPILER
 
 }
 

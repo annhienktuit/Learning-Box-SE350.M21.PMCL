@@ -31,7 +31,7 @@ import com.instructure.canvasapi2.utils.isValid
 import com.instructure.teacher.viewinterface.PeopleListView
 import instructure.androidblueprint.SyncPresenter
 import retrofit2.Response
-import java.util.ArrayList
+import java.util.*
 
 
 class PeopleListPresenter(private val mCanvasContext: CanvasContext?) : SyncPresenter<User, PeopleListView>(User::class.java) {
@@ -152,11 +152,11 @@ class PeopleListPresenter(private val mCanvasContext: CanvasContext?) : SyncPres
     private fun fetchAdditionalRecipients(constraint: String) {
         if (mRun != null) {
             mRun?.kill()
-            mHandler.removeCallbacks(mRun)
+            mHandler.removeCallbacks(mRun!!)
 
         }
         mRun = RecipientRunnable(constraint)
-        mHandler.post(mRun)
+        mHandler.post(mRun!!)
     }
 
     fun searchPeopleList(searchTerm: String) {
@@ -195,7 +195,7 @@ class PeopleListPresenter(private val mCanvasContext: CanvasContext?) : SyncPres
 
 
     override fun compare(item1: User, item2: User): Int {
-        return NaturalOrderComparator.compare(item1.sortableName?.toLowerCase().orEmpty(), item2.sortableName?.toLowerCase().orEmpty())
+        return NaturalOrderComparator.compare(item1.sortableName?.lowercase(Locale.getDefault()).orEmpty(), item2.sortableName?.lowercase(Locale.getDefault()).orEmpty())
     }
 
 

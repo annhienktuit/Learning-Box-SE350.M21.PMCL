@@ -107,8 +107,6 @@ dependencies {
     /* AndroidTest Dependencies */
     androidTestImplementation Libs.JUNIT
 
-    implementation "com.squareup.okhttp3:logging-interceptor:3.13.1"
-
     /* Support Dependencies */
     implementation Libs.ANDROIDX_ANNOTATION
     implementation Libs.ANDROIDX_APPCOMPAT
@@ -117,8 +115,7 @@ dependencies {
     implementation Libs.ANDROIDX_RECYCLERVIEW
     implementation Libs.ANDROIDX_CONSTRAINT_LAYOUT
 
-    implementation(Libs.JOURNEY_ZXING) { transitive = false }
-    implementation Libs.ZXING
+    implementation Libs.JOURNEY_ZXING
 
     implementation Libs.FRAGMENT_KTX
     implementation Libs.HILT

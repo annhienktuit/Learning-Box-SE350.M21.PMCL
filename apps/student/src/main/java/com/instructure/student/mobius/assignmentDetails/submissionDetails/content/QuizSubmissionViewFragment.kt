@@ -19,15 +19,17 @@ package com.instructure.student.mobius.assignmentDetails.submissionDetails.conte
 import android.os.Bundle
 import android.webkit.WebChromeClient
 import android.webkit.WebView
+import com.instructure.pandautils.analytics.SCREEN_VIEW_QUIZ_SUBMISSION_VIEW
+import com.instructure.pandautils.analytics.ScreenView
 import com.instructure.pandautils.utils.Const
 import com.instructure.pandautils.utils.setGone
 import com.instructure.pandautils.utils.setInvisible
 import com.instructure.pandautils.utils.setVisible
 import com.instructure.student.R
-import com.instructure.student.activity.InternalWebViewActivity
 import com.instructure.student.fragment.InternalWebviewFragment
 import kotlinx.android.synthetic.main.fragment_webview.*
 
+@ScreenView(SCREEN_VIEW_QUIZ_SUBMISSION_VIEW)
 class QuizSubmissionViewFragment : InternalWebviewFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         getCanvasLoading()?.setVisible() // Set visible so we can test it
@@ -56,7 +58,7 @@ class QuizSubmissionViewFragment : InternalWebviewFragment() {
             return QuizSubmissionViewFragment().apply {
                 arguments = Bundle().apply {
                     putString(Const.INTERNAL_URL, quizUrl)
-                    putBoolean(InternalWebViewActivity.HIDE_TOOLBAR, true)
+                    putBoolean(Const.HIDDEN_TOOLBAR, true)
                     putBoolean(Const.AUTHENTICATE, true)
                     putBoolean(SHOULD_ROUTE_INTERNALLY, false)
                 }

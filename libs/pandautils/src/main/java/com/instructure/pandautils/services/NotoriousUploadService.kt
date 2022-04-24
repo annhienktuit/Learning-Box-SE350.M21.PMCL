@@ -104,18 +104,18 @@ class NotoriousUploadService : IntentService(NotoriousUploadService::class.java.
 
         createNotificationChannel(CHANNEL_ID)
 
-        mediaPath = intent.getStringExtra(Const.MEDIA_FILE_PATH)
+        mediaPath = intent.getStringExtra(Const.MEDIA_FILE_PATH) ?: ""
 
-        notificationManager.notify(notificationId, builder.build())
-
-        startForeground(notificationId, builder.build())
-
-        startFileUpload(submissionId)
+        if (mediaPath.isNotEmpty()) {
+            notificationManager.notify(notificationId, builder.build())
+            startForeground(notificationId, builder.build())
+            startFileUpload(submissionId)
+        } else {
+            handleFailure(null)
+        }
     }
 
     private fun createNotificationChannel(channelId: String) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
-
         // Prevents recreation of notification channel if it exists.
         val channelList = notificationManager.notificationChannels
         for (channel in channelList) {

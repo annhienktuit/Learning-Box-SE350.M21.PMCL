@@ -59,11 +59,8 @@ import com.instructure.canvasapi2.utils.ApiPrefs
 import com.instructure.canvasapi2.utils.FileUtils.getAssetsFile
 import com.instructure.canvasapi2.utils.Logger.e
 import com.instructure.pandautils.R
-import com.instructure.pandautils.utils.Const
-import com.instructure.pandautils.utils.DP
+import com.instructure.pandautils.utils.*
 import com.instructure.pandautils.utils.FileUploadUtils.getExternalCacheDir
-import com.instructure.pandautils.utils.Utils
-import com.instructure.pandautils.utils.requestWebPermissions
 import com.instructure.pandautils.video.VideoWebChromeClient
 import java.io.File
 import java.io.UnsupportedEncodingException
@@ -92,6 +89,7 @@ class CanvasWebView @JvmOverloads constructor(
         fun onPageFinishedCallback(webView: WebView, url: String)
         fun routeInternallyCallback(url: String)
         fun canRouteInternallyDelegate(url: String): Boolean
+
     }
 
     interface CanvasEmbeddedWebViewCallback {
@@ -191,6 +189,10 @@ class CanvasWebView @JvmOverloads constructor(
     fun addVideoClient(activity: Activity) {
         webChromeClient = CanvasWebChromeClient(activity, this)
         setWebChromeClient(webChromeClient)
+    }
+
+    fun setZoomSettings(enabled: Boolean) {
+        this.settings.builtInZoomControls = enabled
     }
 
     private fun addJavascriptInterface() {
@@ -363,17 +365,6 @@ class CanvasWebView @JvmOverloads constructor(
             // Check if the URL has a scheme that we aren't handling
             val uri = Uri.parse(url)
             if (uri != null && uri.scheme != null && uri.scheme != "http" && uri.scheme != "https") {
-                // Special scheme, send URL to app that can handle it
-                val intent = Intent(Intent.ACTION_VIEW, uri)
-                // Verify that the intent will resolve to an activity
-                if (intent.resolveActivity(context.packageManager) != null) {
-                    if (uri.scheme == "yellowdig") {
-                        // Pop off the LTI page so it doesn't try to reload the yellowdig app when going back to our app
-                        popBackStack()
-                    }
-                    context.startActivity(intent)
-                    return true
-                }
                 if (url.startsWith("intent:")) {
                     try {
                         val appIntent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME)
@@ -391,6 +382,21 @@ class CanvasWebView @JvmOverloads constructor(
                     } catch (e: URISyntaxException) {
                         //not an intent uri
                     }
+                }
+
+                // Special scheme, send URL to app that can handle it
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                // Verify that the intent will resolve to an activity
+                if (intent.resolveActivity(context.packageManager) != null) {
+                    if (uri.scheme == "yellowdig") {
+                        // Pop off the LTI page so it doesn't try to reload the yellowdig app when going back to our app
+                        popBackStack()
+                    }
+                    context.startActivity(intent)
+                    return true
+                } else {
+                    toast(R.string.noCompatibleAppInstalled, Toast.LENGTH_LONG)
+                    return true
                 }
             }
             // Is the URL something we can link to inside our application?
@@ -449,12 +455,12 @@ class CanvasWebView @JvmOverloads constructor(
         }
     }
 
-    override fun loadData(data: String?, mimeType: String?, encoding: String?) {
+    override fun loadData(data: String, mimeType: String?, encoding: String?) {
         addJavascriptInterface()
         super.loadData(data, mimeType, encoding)
     }
 
-    override fun loadDataWithBaseURL(url: String?, data: String?, mimeType: String?, encoding: String?, history: String?) {
+    override fun loadDataWithBaseURL(url: String?, data: String, mimeType: String?, encoding: String?, history: String?) {
         addJavascriptInterface()
         super.loadDataWithBaseURL(url, data, mimeType, encoding, history)
     }
@@ -514,7 +520,7 @@ class CanvasWebView @JvmOverloads constructor(
         // If this html that we're about to load has a math tag and isn't just an image we want to parse it with MathJax.
         // This is the version that web currently uses (the 2.7.1 is the version number) and this is the check that they do to
         // decide if they'll run the MathJax script on the webview
-        if (content.contains("<math") && !content.contains("<img class='equation_image'")) {
+        if ((content.contains("<math") || content.contains(Regex("\\\$\\\$.+\\\$\\\$|\\\\\\(.+\\\\\\)"))) && !content.contains("<img class='equation_image'")) {
             return """<script type="text/javascript"
                 src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
         </script>$content"""
@@ -538,11 +544,7 @@ class CanvasWebView @JvmOverloads constructor(
         // Remove all html tags and set content description for accessibility
         // call toString on fromHTML because certain Spanned objects can cause this to crash
         val contentDescription = title?.let { "$it $formattedHtml" } ?: formattedHtml
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            this.contentDescription = simplifyHTML(Html.fromHtml(contentDescription, Html.FROM_HTML_MODE_LEGACY))
-        } else {
-            this.contentDescription = simplifyHTML(Html.fromHtml(contentDescription))
-        }
+        this.contentDescription = simplifyHTML(Html.fromHtml(contentDescription, Html.FROM_HTML_MODE_LEGACY))
     }
 
     fun setCanvasWebChromeClientShowFilePickerCallback(callback: VideoPickerCallback?) {

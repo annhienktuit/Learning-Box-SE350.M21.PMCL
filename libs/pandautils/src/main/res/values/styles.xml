@@ -204,4 +204,13 @@
         <item name="android:layout_gravity">center_vertical</item>
     </style>
 
+    <style name="roundedImageView" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">4dp</item>
+    </style>
+
+    <style name="SwitchTheme">
+        <item name="colorControlActivated">@color/electricBlueBadge</item>
+    </style>
+
 </resources>

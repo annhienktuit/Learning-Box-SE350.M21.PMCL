@@ -33,14 +33,19 @@ import com.instructure.canvasapi2.utils.*
 import com.instructure.canvasapi2.utils.weave.*
 import com.instructure.interactions.router.Route
 import com.instructure.interactions.router.RouterParams
+import com.instructure.pandautils.analytics.SCREEN_VIEW_BASIC_QUIZ
+import com.instructure.pandautils.analytics.ScreenView
 import com.instructure.pandautils.utils.*
 import com.instructure.pandautils.views.CanvasWebView
 import com.instructure.student.R
 import com.instructure.student.router.RouteMatcher
 import com.instructure.student.util.LockInfoHTMLHelper
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
+@ScreenView(SCREEN_VIEW_BASIC_QUIZ)
 class BasicQuizViewFragment : InternalWebviewFragment() {
 
     private var quizDetailsJob: WeaveJob? = null
@@ -170,7 +175,7 @@ class BasicQuizViewFragment : InternalWebviewFragment() {
         quizDetailsJob = tryWeave {
             quiz = awaitApi<Quiz> { QuizManager.getDetailedQuizByUrl(quizUrl, true, it) }
 
-            processQuizDetails(quiz?.url.validOrNull() ?: baseURL)
+            loadQuizSafely(quiz?.url.validOrNull() ?: baseURL)
         } catch { Logger.e("Error loading quiz information: ${it.message}") }
     }
 
@@ -179,17 +184,27 @@ class BasicQuizViewFragment : InternalWebviewFragment() {
             quiz = awaitApi<Quiz> { QuizManager.getDetailedQuiz(canvasContext, quizId, true, it) }
             baseURL = quiz?.url ?: baseURL
 
-            processQuizDetails(quiz?.url)
+            loadQuizSafely(quiz?.url)
         } catch { Logger.e("Error loading quiz information: ${it.message}") }
     }
 
-    private suspend fun processQuizDetails(url: String?) {
+    private suspend fun loadQuizSafely(url: String?) {
+        if (url != null) {
+            processQuizDetails(url)
+        } else {
+            withContext(Dispatchers.Main) {
+                toast(R.string.failedToLoadQuiz)
+            }
+        }
+    }
+
+    private suspend fun processQuizDetails(url: String) {
         // Only show the lock if submissions are empty, otherwise let them view their submission
         if (quiz?.lockInfo != null && awaitApi<QuizSubmissionResponse> { QuizManager.getFirstPageQuizSubmissions(canvasContext, quiz!!.id, true, it) }.quizSubmissions.isEmpty()) {
             populateWebView(LockInfoHTMLHelper.getLockedInfoHTML(quiz?.lockInfo!!, requireContext(), R.string.lockedQuizDesc))
         } else {
             val authenticatedUrl = tryOrNull {
-                awaitApi<AuthenticatedSession> { OAuthManager.getAuthenticatedSession(url!!, it) }.sessionUrl
+                awaitApi<AuthenticatedSession> { OAuthManager.getAuthenticatedSession(url, it) }.sessionUrl
             }
             getCanvasWebView()?.loadUrl(authenticatedUrl ?: url, APIHelper.referrer)
         }

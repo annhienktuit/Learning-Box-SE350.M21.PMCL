@@ -94,21 +94,21 @@ class FetchFileAsyncTask private constructor(
                     .newCall(request)
                     .execute()
 
-            if (!response.isSuccessful) throw IOException("Unable to download. Error code ${response.code()}")
+            if (!response.isSuccessful) throw IOException("Unable to download. Error code ${response.code}")
 
             // Get the total expected download size. If this size is unknown this will be -1, and incremental progress updates will not be posted.
-            val total = response.body()?.contentLength()?.toFloat() ?: 0f
+            val total = response.body?.contentLength()?.toFloat() ?: 0f
 
             // Set up source and sink
             val sink = tmpFile.sink().buffer()
-            val source = response.body()?.source()
+            val source = response.body?.source()
 
             var downloaded = 0L
             var lastUpdate = System.currentTimeMillis()
             var read: Long
 
             // Perform download.
-            read = source?.read(sink.buffer(), BUFFER_SIZE) ?: 0
+            read = source?.read(sink.buffer, BUFFER_SIZE) ?: 0
             if (total > 0) mCallback.onProgress(0f)
             while (read > 0 && !isCancelled) {
                 sink.flush()
@@ -119,7 +119,7 @@ class FetchFileAsyncTask private constructor(
                         mCallback.onProgress(downloaded / total)
                     }
                 }
-                read = source?.read(sink.buffer(), BUFFER_SIZE) ?: 0
+                read = source?.read(sink.buffer, BUFFER_SIZE) ?: 0
             }
             if (total > 0) mCallback.onProgress(1f)
 

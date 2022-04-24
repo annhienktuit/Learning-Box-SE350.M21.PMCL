@@ -46,9 +46,11 @@
 
     <!-- Turn in Files -->
     <string name="addFile">Bæta við skrá</string>
+
     <string name="fromCamera">Myndavél</string>
     <string name="fromGallery">Gallerí</string>
     <string name="fromDevice">Tæki</string>
+    <string name="fromDocumentScanning">Skanni</string>
     <string name="fromOtherApplication">Annað</string>
     <string name="Domain">Lén</string>
     <string name="files">Skrár</string>
@@ -121,6 +123,7 @@
     <string name="oneOrMoreExtensionNotAllowed">Ein eða fleiri af skránum er með nafnauka skrár sem er ekki leyfð</string>
     <string name="extensionNotAllowed">Valin skráargerð er ekki leyfileg.</string>
     <string name="allowedExtensions">Leyfðir nafnaukar:&#160;</string>
+
     <!-- Media Task Loader -->
     <string name="noDataConnection"> Athugaðu gagnatengingu þína og reyndu aftur. </string>
     <string name="noApps">Tækið er ekki með uppsett app sem getur opnað þessa skrá.</string>
@@ -184,9 +187,9 @@
     <string name="noModulesSubtext">Það lítur ekki út fyrir að einingar hafi verið búnar til.</string>
     <string name="noPages">Engar síður</string>
     <string name="noPagesSubtext">Engin síður virðast hafa verið stofnaðar enn.</string>
-
     <string name="modulesLockedSubtext">Slökkt hefur verið á námsefni fyrir þetta námskeið.</string>
     <string name="modulesLocked">Eitthvað fór úrskeiðis</string>
+
     <!--General-->
     <string name="yes">Já</string>
     <string name="no">Nei</string>
@@ -384,10 +387,10 @@
     <string name="notificationPrimaryInboxTitle">Canvas-tilkynningar</string>
     <string name="notificationChannelNamePrimary">Almennar Canvas-tilkynningar</string>
     <string name="notificationChannelDescriptionPrimary">Frekari fínstillingar á tilkynningum má gera innan kjörstillingahluta Canvas-tilkynninga.</string>
-
     <plurals name="notificationGroupContent">
         <item quantity="other">%d nýjar tilkynningar</item>
     </plurals>
+
     <string name="copyLinkAddress">Afrita slóð tengils</string>
     <string name="copyLink">Afrita tengil</string>
     <string name="linkCopied">Tengill afritaður</string>
@@ -431,5 +434,55 @@
     <string name="notificationChannelDescriptionInAppUpdate">Canvas tilkynningar vegna uppfærslu í smáforriti.</string>
     <string name="appUpdateReadyTitle">Smáforrit tilbúið til uppfærslu</string>
     <string name="appUpdateReadyDescription">Endurræstu smáforritið til að setja upp nýja útgáfu</string>
+    <string name="nothing_planned_yet">Ekkert skipulagt ennþá</string>
+    <string name="schedule_tag_graded">Metið</string>
+    <plurals name="schedule_tag_replies">
+        <item quantity="one">%d Svar</item>
+        <item quantity="other">%d Svör></item>
+    </plurals>
+    <string name="schedule_tag_feedback">Endurgjöf</string>
+    <string name="schedule_tag_late">Seint</string>
+    <string name="schedule_tag_redo">Endurtaka</string>
+    <string name="schedule_tag_excused">Undanþegið</string>
+    <string name="tomorrow">Á morgun</string>
+    <string name="yesterday">Í gær</string>
+    <string name="schedule_calendar_event_due_text">Á %s</string>
+    <string name="schedule_calendar_event_interval_text">%1$s til %2$s</string>
+    <string name="schedule_todo_due_text">Verkefni: %s</string>
+    <string name="schedule_due_text">Skil: %s</string>
+    <string name="show_missing_items_title">Sýna %d hluti sem vantar</string>
+    <string name="hide_missing_items_title">Fela %d hluti sem vantar</string>
+    <string name="schedule_error_message">Get ekki náð í stundaskrá þína</string>
+    <string name="schedule_todo_title">Verkefnalisti</string>
+    <plurals name="schedule_points">
+        <item quantity="zero">%s punktur</item>
+        <item quantity="one">%s punktur</item>
+        <item quantity="other">%s punktar</item>
+    </plurals>
 
+    <plurals name="a11y_schedule_points">
+        <item quantity="zero">%.1f punktar</item>
+        <item quantity="one">%.1f punktur</item>
+        <item quantity="other">%.1f punktar</item>
+    </plurals>
+    <string name="schedule_all_day_event_text">Allan daginn</string>
+    <string name="schedule_tag_missing">Vantar</string>
+    <string name="previous_week">Fyrri vika</string>
+    <string name="next_week">Næsta vika</string>
+    <string name="a11y_schedule_day_header_content_description">%1$s, %2$s</string>
+    <string name="a11y_schedule_course_header_content_description">Námskeið %s</string>
+    <string name="a11y_announcement">Tilkynning</string>
+    <string name="a11y_discussion_topic">Umræða</string>
+    <string name="a11y_calendar_event">Dagatalsviðburður</string>
+    <string name="a11y_assignment">Verkefni</string>
+    <string name="a11y_planner_note">Athugasemd skipuleggjara</string>
+    <string name="a11y_quiz">Próf</string>
+    <string name="a11y_todo">Verkefnalisti</string>
+    <string name="a11y_page">Síða</string>
+    <string name="a11y_marked_as_done">Merkt sem lokið</string>
+    <string name="a11y_not_marked_as_done">Ekki merkt sem lokið</string>
+    <string name="a11y_mark_as_done">Merkja sem lokið</string>
+    <string name="a11y_mark_as_not_done">mark_as_not_done</string>
+    <string name="error_loading_course_details">Æi! Villa átti sér stað við að hlaða inn námskeiðsupplýsingum.</string>
+    <string name="a11y_schedule_marked_as_not_done">%s merkt sem ólokið</string>
 </resources>

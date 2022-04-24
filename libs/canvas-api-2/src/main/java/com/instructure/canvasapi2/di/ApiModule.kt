@@ -13,7 +13,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object ApiModule {
+class ApiModule {
 
     @Provides
     fun provideRemoteConfigUtils(): RemoteConfigUtils {
@@ -61,6 +61,26 @@ object ApiModule {
     }
 
     @Provides
+    fun provideToDoManager(): ToDoManager {
+        return ToDoManager
+    }
+
+    @Provides
+    fun provideEnrollmentManager(): EnrollmentManager {
+        return EnrollmentManager
+    }
+
+    @Provides
+    fun provideExternalToolManager(): ExternalToolManager {
+        return ExternalToolManager
+    }
+
+    @Provides
+    fun provideCanvaDocsManager(): CanvaDocsManager {
+        return CanvaDocsManager
+    }
+
+    @Provides
     @Singleton
     fun provideHelpLinksApi(): HelpLinksAPI {
         return HelpLinksAPI
@@ -76,5 +96,40 @@ object ApiModule {
     @Singleton
     fun providePlannerApi(): PlannerAPI {
         return PlannerAPI
+    }
+
+    @Provides
+    fun provideAssignmentManager(): AssignmentManager {
+        return AssignmentManager
+    }
+
+    @Provides
+    fun provideCalendarEventManager(): CalendarEventManager {
+        return CalendarEventManager
+    }
+
+    @Provides
+    fun provideTabManager(): TabManager {
+        return TabManager
+    }
+
+    @Provides
+    fun provideAccountNotificationManager(): AccountNotificationManager {
+        return AccountNotificationManager
+    }
+
+    @Provides
+    fun provideConferenceManager(): ConferenceManager {
+        return ConferenceManager
+    }
+
+    @Provides
+    fun provideCommunicationChannelsManager(): CommunicationChannelsManager {
+        return CommunicationChannelsManager
+    }
+
+    @Provides
+    fun provideNotificationPreferencesManager(): NotificationPreferencesManager {
+        return NotificationPreferencesManager
     }
 }

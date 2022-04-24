@@ -50,6 +50,7 @@
     <string name="fromCamera">กล้องถ่ายรูป</string>
     <string name="fromGallery">แกลเลอรี่</string>
     <string name="fromDevice">อุปกรณ์</string>
+    <string name="fromDocumentScanning">สแกนเนอร์</string>
     <string name="fromOtherApplication">อื่น ๆ</string>
     <string name="Domain">โดเมน</string>
     <string name="files">ไฟล์</string>
@@ -434,5 +435,55 @@
     <string name="notificationChannelDescriptionInAppUpdate">การแจ้งข้อมูลจาก Canvas สำหรับข้อมูลอัพเดตในแอพ</string>
     <string name="appUpdateReadyTitle">แอพพร้อมสำหรับการอัพเดต</string>
     <string name="appUpdateReadyDescription">รีสตาร์ทแอพเพื่อติดตั้งเวอร์ชั่นใหม่</string>
+    <string name="nothing_planned_yet">ยังไม่มีแผนตอนนี้</string>
+    <string name="schedule_tag_graded">ให้เกรดแล้ว</string>
+    <plurals name="schedule_tag_replies">
+        <item quantity="one">%d การตอบกลับ</item>
+        <item quantity="other">%d การตอบกลับ></item>
+    </plurals>
+    <string name="schedule_tag_feedback">ผลตอบรับ</string>
+    <string name="schedule_tag_late">ล่าช้า</string>
+    <string name="schedule_tag_redo">ทำซ้ำ</string>
+    <string name="schedule_tag_excused">ได้รับการยกเว้น</string>
+    <string name="tomorrow">พรุ่งนี้</string>
+    <string name="yesterday">เมื่อวานนี้</string>
+    <string name="schedule_calendar_event_due_text">เมื่อ %s</string>
+    <string name="schedule_calendar_event_interval_text">%1$s ถึง %2$s</string>
+    <string name="schedule_todo_due_text">สิ่งที่ต้องทำ: %s</string>
+    <string name="schedule_due_text">ครบกำหนด: %s</string>
+    <string name="show_missing_items_title">แสดง %d รายการที่ขาดหาย</string>
+    <string name="hide_missing_items_title">ซ่อน %d รายการที่ขาดหาย</string>
+    <string name="schedule_error_message">ไม่สามารถสืบค้นกำหนดเวลาของคุณได้</string>
+    <string name="schedule_todo_title">สิ่งที่ต้องทำ</string>
+    <plurals name="schedule_points">
+        <item quantity="zero">%s คะแนน</item>
+        <item quantity="one">%s คะแนน</item>
+        <item quantity="other">%s คะแนน</item>
+    </plurals>
 
+    <plurals name="a11y_schedule_points">
+        <item quantity="zero">%.1f คะแนน</item>
+        <item quantity="one">%.1f คะแนน</item>
+        <item quantity="other">%.1f คะแนน</item>
+    </plurals>
+    <string name="schedule_all_day_event_text">ทั้งวัน</string>
+    <string name="schedule_tag_missing">ขาดหาย</string>
+    <string name="previous_week">สัปดาห์ก่อนหน้า</string>
+    <string name="next_week">สัปดาห์ถัดไป</string>
+    <string name="a11y_schedule_day_header_content_description">%1$s, %2$s</string>
+    <string name="a11y_schedule_course_header_content_description">บทเรียน %s</string>
+    <string name="a11y_announcement">ประกาศ</string>
+    <string name="a11y_discussion_topic">การพูดคุย</string>
+    <string name="a11y_calendar_event">กิจกรรมในปฏิทิน</string>
+    <string name="a11y_assignment">งาน</string>
+    <string name="a11y_planner_note">หมายเหตุสำหรับแผนงาน</string>
+    <string name="a11y_quiz">แบบทดสอบ</string>
+    <string name="a11y_todo">สิ่งที่ต้องทำ</string>
+    <string name="a11y_page">หน้าเพจ</string>
+    <string name="a11y_marked_as_done">กำกับว่าเสร็จสิ้นแล้ว</string>
+    <string name="a11y_not_marked_as_done">ไม่ได้กำกับว่าเสร็จสิ้นแล้ว</string>
+    <string name="a11y_mark_as_done">กำกับว่าเสร็จสิ้นแล้ว</string>
+    <string name="a11y_mark_as_not_done">mark_as_not_done</string>
+    <string name="error_loading_course_details">โอ๊ะ โอ! เกิดข้อผิดพลาดขณะโหลดรายละเอียดบทเรียน</string>
+    <string name="a11y_schedule_marked_as_not_done">%s กำลังไว้ว่าไม่เสร็จสิ้น</string>
 </resources>

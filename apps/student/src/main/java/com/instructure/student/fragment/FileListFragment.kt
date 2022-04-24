@@ -21,7 +21,6 @@ import android.content.DialogInterface
 import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Environment
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -44,7 +43,8 @@ import com.instructure.interactions.bookmarks.Bookmarkable
 import com.instructure.interactions.bookmarks.Bookmarker
 import com.instructure.interactions.router.Route
 import com.instructure.interactions.router.RouterParams
-import com.instructure.pandautils.dialogs.FileExistsDialog
+import com.instructure.pandautils.analytics.SCREEN_VIEW_FILE_LIST
+import com.instructure.pandautils.analytics.ScreenView
 import com.instructure.pandautils.dialogs.UploadFilesDialog
 import com.instructure.pandautils.utils.*
 import com.instructure.student.R
@@ -59,8 +59,8 @@ import kotlinx.android.synthetic.main.fragment_file_list.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import java.io.File
 
+@ScreenView(SCREEN_VIEW_FILE_LIST)
 @PageView
 class FileListFragment : ParentFragment(), Bookmarkable {
 
@@ -251,7 +251,7 @@ class FileListFragment : ParentFragment(), Bookmarkable {
             recyclerAdapter = FileListRecyclerAdapter(requireContext(), canvasContext, getFileMenuOptions(folder!!, canvasContext), folder!!, adapterCallback)
         }
 
-        configureRecyclerView(view!!, requireContext(), recyclerAdapter!!, R.id.swipeRefreshLayout, R.id.emptyView, R.id.listView)
+        configureRecyclerView(requireView(), requireContext(), recyclerAdapter!!, R.id.swipeRefreshLayout, R.id.emptyView, R.id.listView)
 
         setupToolbarMenu(toolbar)
 
@@ -323,17 +323,9 @@ class FileListFragment : ParentFragment(), Bookmarkable {
 
     private fun downloadItem(item: FileFolder) {
         // First check if the Download Manager exists, and is enabled
-
         // Then check for permissions
         if (PermissionUtils.hasPermissions(requireActivity(), PermissionUtils.WRITE_EXTERNAL_STORAGE)) {
-            // Check if file exists... if so, show a dialog asking if the user wants to replace the file
-            val downloadedFile = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), item.displayName)
-            if (downloadedFile.exists()) {
-                FileExistsDialog.show(requireActivity().supportFragmentManager, item.displayName
-                        ?: "") { FileDownloadJobIntentService.scheduleDownloadJob(requireContext(), item) }
-            } else {
-                FileDownloadJobIntentService.scheduleDownloadJob(requireContext(), item)
-            }
+            FileDownloadJobIntentService.scheduleDownloadJob(requireContext(), item)
         } else {
             // Need permission
             requestPermissions(PermissionUtils.makeArray(PermissionUtils.WRITE_EXTERNAL_STORAGE), PermissionUtils.WRITE_FILE_PERMISSION_REQUEST_CODE)

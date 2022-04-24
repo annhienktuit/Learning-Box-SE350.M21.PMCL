@@ -38,29 +38,12 @@ class RCETextEditor @JvmOverloads constructor(
         loadCSS("rce_style.css")
     }
 
-    private fun checkForMathTags(content: String) {
-        // If this html that we're about to load has a math tag and isn't just an image we want to parse it with MathJax.
-        // This is the version that web currently uses (the 2.7.1 is the version number) and this is the check that they do to
-        // decide if they'll run the MathJax script on the webview
-        if (content.contains("<math") && !content.contains("<img class='equation_image'")) {
-            val jsCSSImport = "(function() {" +
-                    "    var head  = document.getElementsByTagName(\"head\")[0];" +
-                    "    var script  = document.createElement(\"script\");" +
-                    "    script.type= 'text/javascript';" +
-                    "    script.src= \"https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML\";" +
-                    "    head.appendChild(script);" +
-                    "}) ();"
-            exec("javascript:$jsCSSImport")
-        }
-    }
-
     private fun formatHTML(html: String, title: String): String {
         var contents = html
         if (0 != context.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) {
             WebView.setWebContentsDebuggingEnabled(true)
         }
         contents = applyWorkAroundForDoubleSlashesAsUrlSource(contents)
-        checkForMathTags(contents)
 
         // Note: loading with a base url for the referrer does not work.
         setupAccessibilityContentDescription(contents, title)
@@ -79,11 +62,7 @@ class RCETextEditor @JvmOverloads constructor(
         // call toString on fromHTML because certain Spanned objects can cause this to crash
         var description = formattedHtml
         if (title != null) description = "$title $formattedHtml"
-        contentDescription = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            simplifyHTML(Html.fromHtml(description, Html.FROM_HTML_MODE_LEGACY))
-        } else {
-            simplifyHTML(Html.fromHtml(description))
-        }
+        contentDescription = simplifyHTML(Html.fromHtml(description, Html.FROM_HTML_MODE_LEGACY))
     }
 
     val accessibilityContentDescription: String

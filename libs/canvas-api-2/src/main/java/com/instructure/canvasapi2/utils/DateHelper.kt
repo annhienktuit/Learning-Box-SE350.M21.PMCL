@@ -84,11 +84,8 @@ object DateHelper {
     val dayMonthDateFormatUniversal: SimpleDateFormat get() = SimpleDateFormat("MMM d", Locale.getDefault())
 
     val monthDayYearDateFormatUniversal: SimpleDateFormat
-        get() = if (Build.VERSION.SDK_INT >= 24) {
-            SimpleDateFormat("MMMM d, YYYY", Locale.getDefault())
-        } else {
-            SimpleDateFormat("MMMM d, yyyy", Locale.getDefault())
-        }
+        get() = SimpleDateFormat("MMMM d, YYYY", Locale.getDefault())
+
 
     fun getFormattedTime(context: Context?, date: Date?): String? {
         return context?.let { getPreferredTimeFormat(it).format(date) }
@@ -211,9 +208,9 @@ object DateHelper {
         val cal = GregorianCalendar()
         cal.timeInMillis = dateTime
         val genericDate = GregorianCalendar(
-            cal[Calendar.YEAR],
-            cal[Calendar.MONTH],
-            cal[Calendar.DAY_OF_MONTH]
+                cal[Calendar.YEAR],
+                cal[Calendar.MONTH],
+                cal[Calendar.DAY_OF_MONTH]
         )
         return Date(genericDate.timeInMillis)
     }
@@ -233,4 +230,5 @@ object DateHelper {
         calendar[year, month, day, hour, minute] = second
         return calendar.time
     }
+
 }

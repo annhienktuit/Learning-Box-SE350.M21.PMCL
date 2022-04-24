@@ -42,18 +42,21 @@
 
     <string name="notificationChannelNameFileUploadsName">Upload meddelelser</string>
     <string name="notificationChannelNameFileUploadsDescription">Canvas-meddelelser til løbende uploads.</string>
+
+
     <!-- Turn in Files -->
     <string name="addFile">Tilføj fil</string>
+
     <string name="fromCamera">Kamera</string>
     <string name="fromGallery">Galleri</string>
     <string name="fromDevice">Enhed</string>
+    <string name="fromDocumentScanning">Scanner</string>
     <string name="fromOtherApplication">Anden</string>
     <string name="Domain">Domæne</string>
     <string name="files">Filer</string>
     <string name="file">Fil</string>
     <string name="fileTalkBack">Fil %s</string>
     <string name="folderTalkBack">Mappe %s</string>
-
     <string name="addItem">Tilføj element</string>
     <string name="assignment">Opgave</string>
     <string name="attachedFiles">Vedhæftede filer</string>
@@ -97,6 +100,7 @@
     <string name="assignmentSubmissionUpload">Uploader aflevering til %s</string>
     <string name="assignmentSubmissionError">Aflevering mislykkedes for %s</string>
     <string name="assignmentSubmissionComplete">%s blev indsendt</string>
+
     <!--Errors-->
     <string name="errorOccurred">En uventet fejl opstod.</string>
     <string name="serverError">En serverfejl opstod.</string>
@@ -183,9 +187,9 @@
     <string name="noModulesSubtext">Det ser ud til, at der ikke er oprettet nogen moduler endnu.</string>
     <string name="noPages">Ingen sier</string>
     <string name="noPagesSubtext">Det ser ud til, at der ikke er oprettet nogen sider endnu.</string>
-
     <string name="modulesLockedSubtext">Moduler er blevet deaktiveret for dette fag.</string>
     <string name="modulesLocked">Noget gik galt</string>
+
     <!--General-->
     <string name="yes">Ja</string>
     <string name="no">Nej</string>
@@ -379,13 +383,14 @@
     <string name="utils_uploadToSubmissionComment">Upload til afleveringskommentar</string>
     <string name="utils_attachFile">Vedhæft en fil</string>
     <string name="utils_with">med</string>
+
     <string name="notificationPrimaryInboxTitle">Canvas-meddelelse</string>
     <string name="notificationChannelNamePrimary">Almindelige Canvas-meddelelser</string>
     <string name="notificationChannelDescriptionPrimary">Yderligere konfiguration af meddelelser kan ske i sektionen Canvas-meddelelsesindstillinger.</string>
-
     <plurals name="notificationGroupContent">
         <item quantity="other">%d nye meddelelser</item>
     </plurals>
+
     <string name="copyLinkAddress">Kopier linkadresse</string>
     <string name="copyLink">Kopier link</string>
     <string name="linkCopied">Link kopieret</string>
@@ -415,7 +420,6 @@
     <string name="image_uploading">Uploader foto ...</string>
     <string name="image_upload_error">Fejl ved upload af foto</string>
     <string name="retry">Prøv igen</string>
-
     <string name="search">Søg</string>
     <string name="searchAssignmentsHint">Søg opgaver</string>
     <string name="searchAnnouncementsHint">Søg beskeder</string>
@@ -423,11 +427,62 @@
     <string name="searchPagesHint">Søg sider</string>
     <string name="searchQuizzesHint">Søg test</string>
     <string name="noItemsMatchingQuery">Ingen elementer matcher \"%s\"</string>
+
     <string name="selected">Valgt</string>
 
     <string name="notificationChannelNameInAppUpdate">Opdateringsmeddelelser for appen</string>
     <string name="notificationChannelDescriptionInAppUpdate">Canvas-meddelelser til opdateringer i appen.</string>
     <string name="appUpdateReadyTitle">App klar til opdatering</string>
     <string name="appUpdateReadyDescription">Genstart appen for at installere den nye version</string>
+    <string name="nothing_planned_yet">Intet planlagt endnu</string>
+    <string name="schedule_tag_graded">Bedømt</string>
+    <plurals name="schedule_tag_replies">
+        <item quantity="one">%d svar</item>
+        <item quantity="other">%d svar></item>
+    </plurals>
+    <string name="schedule_tag_feedback">Feedback</string>
+    <string name="schedule_tag_late">Sen</string>
+    <string name="schedule_tag_redo">Annuller fortryd</string>
+    <string name="schedule_tag_excused">Undskyldt</string>
+    <string name="tomorrow">I morgen</string>
+    <string name="yesterday">I går</string>
+    <string name="schedule_calendar_event_due_text">Kl. %s</string>
+    <string name="schedule_calendar_event_interval_text">%1$s til %2$s</string>
+    <string name="schedule_todo_due_text">Opgaveliste: %s</string>
+    <string name="schedule_due_text">Forfalder: %s</string>
+    <string name="show_missing_items_title">Vis %d manglende elementer</string>
+    <string name="hide_missing_items_title">Skjul %d manglende elementer</string>
+    <string name="schedule_error_message">Din tidsplan kunne ikke hentes</string>
+    <string name="schedule_todo_title">Opgaveliste</string>
+    <plurals name="schedule_points">
+        <item quantity="zero">%s point</item>
+        <item quantity="one">%s point</item>
+        <item quantity="other">%s point</item>
+    </plurals>
 
+    <plurals name="a11y_schedule_points">
+        <item quantity="zero">%.1f point</item>
+        <item quantity="one">%.1f point</item>
+        <item quantity="other">%.1f point</item>
+    </plurals>
+    <string name="schedule_all_day_event_text">Hele dagen</string>
+    <string name="schedule_tag_missing">Mangler</string>
+    <string name="previous_week">Forrige uge</string>
+    <string name="next_week">Næste uge</string>
+    <string name="a11y_schedule_day_header_content_description">%1$s, %2$s</string>
+    <string name="a11y_schedule_course_header_content_description">Fag %s</string>
+    <string name="a11y_announcement">Besked</string>
+    <string name="a11y_discussion_topic">Diskussion</string>
+    <string name="a11y_calendar_event">Kalenderbegivenhed</string>
+    <string name="a11y_assignment">Opgave</string>
+    <string name="a11y_planner_note">Planlægger-bemærkning</string>
+    <string name="a11y_quiz">Test</string>
+    <string name="a11y_todo">Opgaveliste</string>
+    <string name="a11y_page">Side</string>
+    <string name="a11y_marked_as_done">Markeret som færdig</string>
+    <string name="a11y_not_marked_as_done">Ikke markeret som færdig</string>
+    <string name="a11y_mark_as_done">Marker som færdig</string>
+    <string name="a11y_mark_as_not_done">mark_as_not_done</string>
+    <string name="error_loading_course_details">Åh ååh! Der opstod en fejl ved forsøg på at indlæse fagdetaljer.</string>
+    <string name="a11y_schedule_marked_as_not_done">%s markeret som ikke færdig</string>
 </resources>

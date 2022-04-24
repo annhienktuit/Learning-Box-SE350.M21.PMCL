@@ -96,11 +96,14 @@ object UserAPI {
         fun generatePairingCode(): Call<PairingCode>
         //endregion
 
-        @GET("users/self/missing_submissions?include[]=planner_overrides")
+        @GET("users/self/missing_submissions?include[]=planner_overrides&filter[]=submittable&filter[]=current_grading_period")
         fun getMissingSubmissions(): Call<List<Assignment>>
 
         @GET
         fun getNextPageMissingSubmissions(@Url nextUrl: String): Call<List<Assignment>>
+
+        @GET("courses/{courseId}/users?enrollment_type[]=teacher&enrollment_type[]=ta&include[]=avatar_url&include[]=bio&include[]=enrollments")
+        fun getFirstPageTeacherListForCourse(@Path("courseId") courseId: Long): Call<List<User>>
     }
 
     fun getColors(adapter: RestBuilder, callback: StatusCallback<CanvasColor>, params: RestParams) {
@@ -243,5 +246,13 @@ object UserAPI {
     fun getNextPageMissingSubmissions(nextUrl: String, adapter: RestBuilder, forceNetwork: Boolean, callback: StatusCallback<List<Assignment>>) {
         val params = RestParams(usePerPageQueryParam = true, isForceReadFromNetwork = forceNetwork)
         callback.addCall(adapter.build(UsersInterface::class.java, params).getNextPageMissingSubmissions(nextUrl)).enqueue(callback)
+    }
+
+    fun getTeacherListForCourse(adapter: RestBuilder, params: RestParams, courseId: Long, callback: StatusCallback<List<User>>) {
+        if (StatusCallback.isFirstPage(callback.linkHeaders)) {
+            callback.addCall(adapter.build(UsersInterface::class.java, params).getFirstPageTeacherListForCourse(courseId)).enqueue(callback)
+        } else if (callback.linkHeaders != null && StatusCallback.moreCallsExist(callback.linkHeaders)) {
+            callback.addCall(adapter.build(UsersInterface::class.java, params).next(callback.linkHeaders!!.nextUrl!!)).enqueue(callback)
+        }
     }
 }

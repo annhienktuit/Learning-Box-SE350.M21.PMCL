@@ -100,7 +100,7 @@ abstract class BaseLoginSignInActivity : AppCompatActivity(), OnAuthenticationSe
     private var httpAuthHandler: HttpAuthHandler? = null
     private var shouldShowProgressBar = false
 
-    private val accountDomain: AccountDomain by lazy { intent.getParcelableExtra<AccountDomain>(ACCOUNT_DOMAIN) }
+    private val accountDomain: AccountDomain by lazy { intent.getParcelableExtra<AccountDomain>(ACCOUNT_DOMAIN) ?: AccountDomain() }
     private val progressBarHandler = Handler()
 
     private val viewModel: LoginViewModel by viewModels()
@@ -209,13 +209,11 @@ abstract class BaseLoginSignInActivity : AppCompatActivity(), OnAuthenticationSe
         }
 
         override fun onReceivedHttpError(view: WebView, request: WebResourceRequest?, errorResponse: WebResourceResponse) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (errorResponse.statusCode == 400 && authenticationURL != null && request != null && request.url != null && authenticationURL == request.url.toString()) {
-                    //If the institution does not support skipping the authentication screen this will catch that error and force the
-                    //rebuilding of the authentication url with the authorization screen flow. Example: canvas.sfu.ca
-                    buildAuthenticationUrl(protocol, accountDomain, clientId, true)
-                    loadAuthenticationUrl(protocol, accountDomain.domain)
-                }
+            if (errorResponse.statusCode == 400 && authenticationURL != null && request != null && request.url != null && authenticationURL == request.url.toString()) {
+                //If the institution does not support skipping the authentication screen this will catch that error and force the
+                //rebuilding of the authentication url with the authorization screen flow. Example: canvas.sfu.ca
+                buildAuthenticationUrl(protocol, accountDomain, clientId, true)
+                loadAuthenticationUrl(protocol, accountDomain.domain)
             }
             super.onReceivedHttpError(view, request, errorResponse)
         }
@@ -371,7 +369,7 @@ abstract class BaseLoginSignInActivity : AppCompatActivity(), OnAuthenticationSe
         if (0 != applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) {
             webView.postDelayed({
                 if (intent.hasExtra(SNICKER_DOODLES)) {
-                    val snickerDoodle: SnickerDoodle = intent.getParcelableExtra(SNICKER_DOODLES)
+                    val snickerDoodle: SnickerDoodle = intent.getParcelableExtra(SNICKER_DOODLES)!!
                     populateWithSnickerDoodle(snickerDoodle)
                 }
             }, 1500)
@@ -385,7 +383,7 @@ abstract class BaseLoginSignInActivity : AppCompatActivity(), OnAuthenticationSe
             deviceName = getString(R.string.unknownDevice)
         }
         // Remove spaces
-        deviceName = deviceName!!.replace(" ", "_")
+        deviceName = deviceName.replace(" ", "_")
         // Changed for the online update to have an actual formatted login page
         var domain = accountDomain!!.domain
         if (domain != null && domain.endsWith("/")) {
@@ -480,7 +478,7 @@ abstract class BaseLoginSignInActivity : AppCompatActivity(), OnAuthenticationSe
         }
 
     private fun loadUrl(webView: WebView, url: String?, headers: Map<String, String>) {
-        webView.loadUrl(url, headers)
+        webView.loadUrl(url ?: "", headers)
         // We need to delay this, because it can happen that this method is called a couple of milliseconds
         // before the onPageFinished triggered for the previous page resulting in hiding the progress bar while still loading.
         progressBarHandler.postDelayed({ showLoading() }, 50)

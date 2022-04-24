@@ -21,7 +21,7 @@ import com.instructure.dataseeding.model.CourseApiModel
 import com.instructure.dataseeding.model.CreateCourse
 import com.instructure.dataseeding.model.CreateCourseWrapper
 import com.instructure.dataseeding.model.FavoriteApiModel
-import com.instructure.dataseeding.util.CanvasRestAdapter
+import com.instructure.dataseeding.util.CanvasNetworkAdapter
 import com.instructure.dataseeding.util.Randomizer
 import retrofit2.Call
 import retrofit2.http.Body
@@ -35,6 +35,9 @@ object CoursesApi {
         @POST("accounts/self/courses")
         fun createCourse(@Body createCourseApiModel: CreateCourseWrapper): Call<CourseApiModel>
 
+        @POST("accounts/{account_id}/courses")
+        fun createCourseInSubAccount(@Path("account_id") accountId: Long, @Body createCourseApiModel: CreateCourseWrapper): Call<CourseApiModel>
+
         @POST("users/self/favorites/courses/{courseId}")
         fun addCourseToFavorites(@Path("courseId") courseId: Long): Call<FavoriteApiModel>
 
@@ -43,16 +46,43 @@ object CoursesApi {
     }
 
     private val adminCoursesService: CoursesService by lazy {
-        CanvasRestAdapter.adminRetrofit.create(CoursesService::class.java)
+        CanvasNetworkAdapter.adminRetrofit.create(CoursesService::class.java)
     }
 
-    private fun coursesService(token: String): CoursesService
-            = CanvasRestAdapter.retrofitWithToken(token).create(CoursesService::class.java)
+    private fun coursesService(token: String): CoursesService =
+        CanvasNetworkAdapter.retrofitWithToken(token).create(CoursesService::class.java)
+
+    fun createCourseInSubAccount(
+        enrollmentTermId: Long? = null,
+        publish: Boolean = true,
+        coursesService: CoursesService = adminCoursesService,
+        homeroomCourse: Boolean = false,
+        accountId: Long? = null,
+        syllabusBody: String? = null
+    ): CourseApiModel {
+        val randomCourseName = Randomizer.randomCourseName()
+        val course = CreateCourseWrapper(
+            offer = publish,
+            course = CreateCourse(
+                name = randomCourseName,
+                courseCode = randomCourseName.substring(0, 2),
+                enrollmentTermId = enrollmentTermId,
+                homeroomCourse = homeroomCourse,
+                accountId = accountId,
+                syllabusBody = syllabusBody
+            )
+        )
+        return coursesService
+            .createCourseInSubAccount(accountId!!, course)
+            .execute()
+            .body()!!
+
+    }
 
     fun createCourse(
-            enrollmentTermId: Long? = null,
-            publish: Boolean = true,
-            coursesService: CoursesService = adminCoursesService
+        enrollmentTermId: Long? = null,
+        publish: Boolean = true,
+        coursesService: CoursesService = adminCoursesService
     ): CourseApiModel {
         val randomCourseName = Randomizer.randomCourseName()
         val course = CreateCourseWrapper(

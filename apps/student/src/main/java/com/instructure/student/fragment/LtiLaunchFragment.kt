@@ -23,12 +23,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
 import com.instructure.canvasapi2.managers.AssignmentManager
 import com.instructure.canvasapi2.managers.SubmissionManager
-import com.instructure.canvasapi2.models.CanvasContext
-import com.instructure.canvasapi2.models.LTITool
-import com.instructure.canvasapi2.models.Tab
+import com.instructure.canvasapi2.models.*
 import com.instructure.canvasapi2.utils.ApiPrefs
 import com.instructure.canvasapi2.utils.isValid
 import com.instructure.canvasapi2.utils.pageview.PageView
@@ -36,11 +35,14 @@ import com.instructure.canvasapi2.utils.pageview.PageViewUrl
 import com.instructure.canvasapi2.utils.validOrNull
 import com.instructure.canvasapi2.utils.weave.weave
 import com.instructure.interactions.router.Route
+import com.instructure.pandautils.analytics.SCREEN_VIEW_LTI_LAUNCH
+import com.instructure.pandautils.analytics.ScreenView
 import com.instructure.pandautils.utils.*
 import com.instructure.student.R
 import kotlinx.android.synthetic.main.fragment_lti_launch.*
 import kotlinx.coroutines.Job
 
+@ScreenView(SCREEN_VIEW_LTI_LAUNCH)
 @PageView
 class LtiLaunchFragment : ParentFragment() {
 
@@ -96,7 +98,11 @@ class LtiLaunchFragment : ParentFragment() {
                     when {
                         sessionLessLaunch -> {
                             // This is specific for Studio and Gauge
-                            url = "${ApiPrefs.fullDomain}/api/v1/accounts/self/external_tools/sessionless_launch?url=$url"
+                            url = when (canvasContext) {
+                                is Course -> "${ApiPrefs.fullDomain}/api/v1/courses/${canvasContext.id}/external_tools/sessionless_launch?url=$url"
+                                is Group -> "${ApiPrefs.fullDomain}/api/v1/groups/${canvasContext.id}/external_tools/sessionless_launch?url=$url"
+                                else -> "${ApiPrefs.fullDomain}/api/v1/accounts/self/external_tools/sessionless_launch?url=$url"
+                            }
                             loadSessionlessLtiUrl(url)
                         }
                         isAssignmentLTI -> loadSessionlessLtiUrl(url)
@@ -125,8 +131,12 @@ class LtiLaunchFragment : ParentFragment() {
             .appendQueryParameter("platform", "android")
             .build()
 
-        var intent = CustomTabsIntent.Builder()
+        val colorSchemeParams = CustomTabColorSchemeParams.Builder()
             .setToolbarColor(canvasContext.color)
+            .build()
+
+        var intent = CustomTabsIntent.Builder()
+            .setDefaultColorSchemeParams(colorSchemeParams)
             .setShowTitle(true)
             .build()
             .intent
@@ -143,7 +153,9 @@ class LtiLaunchFragment : ParentFragment() {
 
     private fun displayError() {
         toast(R.string.errorOccurred)
-        (requireContext() as? Activity)?.onBackPressed()
+        if (activity != null) {
+            requireActivity().onBackPressed()
+        }
     }
 
     private suspend fun getLtiTool(url: String): LTITool? {

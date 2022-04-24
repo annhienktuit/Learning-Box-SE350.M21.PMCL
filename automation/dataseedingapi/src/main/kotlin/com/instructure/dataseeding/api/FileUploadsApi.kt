@@ -21,10 +21,11 @@ import com.instructure.dataseeding.model.AttachmentApiModel
 import com.instructure.dataseeding.model.FileUploadParams
 import com.instructure.dataseeding.model.FileUploadType
 import com.instructure.dataseeding.model.StartFileUpload
-import com.instructure.dataseeding.util.CanvasRestAdapter
-import okhttp3.MediaType
+import com.instructure.dataseeding.util.CanvasNetworkAdapter
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -53,10 +54,10 @@ object FileUploadsApi {
     }
 
     private fun fileUploadsService(token: String): FileUploadsService
-            = CanvasRestAdapter.retrofitWithToken(token).create(FileUploadsService::class.java)
+            = CanvasNetworkAdapter.retrofitWithToken(token).create(FileUploadsService::class.java)
 
     private val noAuthUploadsService: FileUploadsService by lazy {
-        CanvasRestAdapter.noAuthRetrofit.create(FileUploadsService::class.java)
+        CanvasNetworkAdapter.noAuthRetrofit.create(FileUploadsService::class.java)
     }
 
     /**
@@ -79,13 +80,14 @@ object FileUploadsApi {
     }
 
     private fun uploadFileToCanvas(fileUploadParams: FileUploadParams, file: ByteArray): AttachmentApiModel {
-        val requestFile = RequestBody.create(MediaType.parse("application/octet-stream"), file)
+        val requestFile =
+            file.toRequestBody("application/octet-stream".toMediaTypeOrNull(), 0)
         val requestFilePart = MultipartBody.Part.createFormData("file", fileUploadParams.uploadParams.get("Filename"), requestFile)
 
         return noAuthUploadsService.uploadFile(
                 fileUploadParams.uploadUrl,
                 fileUploadParams.uploadParams.mapValues
-                { RequestBody.create(MediaType.parse("text/plain"), it.value) },
+                { it.value.toRequestBody("text/plain".toMediaTypeOrNull()) },
                 requestFilePart)
                 .execute()
                 .body()!!

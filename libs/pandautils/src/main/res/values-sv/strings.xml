@@ -46,9 +46,11 @@
 
     <!-- Turn in Files -->
     <string name="addFile">Lägg till fil</string>
+
     <string name="fromCamera">Kamera</string>
     <string name="fromGallery">Galleri</string>
     <string name="fromDevice">Enhet</string>
+    <string name="fromDocumentScanning">Skanner</string>
     <string name="fromOtherApplication">Annat</string>
     <string name="Domain">Domän</string>
     <string name="files">Filer</string>
@@ -91,7 +93,7 @@
     <string name="fileIcon">Filikon</string>
     <string name="uploadingFileNum" formatted="false">Laddar upp %d av %d</string>
     <string name="fileLocked" formatted="false">%s har låsts.</string>
-    <string name="filePermissionGranted">Filerna är nu redo att ladda ned. Försök igen.</string>
+    <string name="filePermissionGranted">Filen är nu klar att laddas ner. Försök igen.</string>
     <string name="filePermissionDenied">Filen kan inte laddas ned utan att ge behörighet.</string>
     <string name="pleaseTryAgain">Behörighet beviljades. Försök igen..</string>
     <string name="pickFile">Välj en fil</string>
@@ -121,6 +123,7 @@
     <string name="oneOrMoreExtensionNotAllowed">En eller flera filer har ett filtillägg som inte är tillåtet</string>
     <string name="extensionNotAllowed">Den valda filtypen är inte tillåten.</string>
     <string name="allowedExtensions">Tillåtna tillägg:&#160;</string>
+
     <!-- Media Task Loader -->
     <string name="noDataConnection"> Kontrollera din dataanslutning och försök igen. </string>
     <string name="noApps">Din enhet har inte några program installerade som kan hantera den här filen.</string>
@@ -184,9 +187,9 @@
     <string name="noModulesSubtext">Det verkar inte som om några moduler har skapats än.</string>
     <string name="noPages">Inga sidor</string>
     <string name="noPagesSubtext">Det verkar inte som om några sidor har skapats än.</string>
-
     <string name="modulesLockedSubtext">Moduler har inaktiverats för den här kursen.</string>
     <string name="modulesLocked">Något gick fel</string>
+
     <!--General-->
     <string name="yes">Ja</string>
     <string name="no">Nej</string>
@@ -343,7 +346,7 @@
     <string name="utils_addNew">Lägg till ny</string>
 
     <!--Attachment Layout-->
-    <string name="utils_downloadAttachment">Ladda ned bilaga</string>
+    <string name="utils_downloadAttachment">Ladda ner bilaga</string>
     <string name="utils_removeAttachment">Ta bort bilaga</string>
 
     <!--Unsaved Changes-->
@@ -384,10 +387,10 @@
     <string name="notificationPrimaryInboxTitle">Canvas-avisering</string>
     <string name="notificationChannelNamePrimary">Allmänna Canvas-aviseringar</string>
     <string name="notificationChannelDescriptionPrimary">Ytterligare konfiguration av aviseringar kan göras i sektionen för inställningar för Canvas-aviseringar.</string>
-
     <plurals name="notificationGroupContent">
         <item quantity="other">%d nya aviseringar</item>
     </plurals>
+
     <string name="copyLinkAddress">Kopiera länkadress</string>
     <string name="copyLink">Kopiera länk</string>
     <string name="linkCopied">Länken har kopierats</string>
@@ -431,5 +434,55 @@
     <string name="notificationChannelDescriptionInAppUpdate">Canvas-aviseringar för uppdateringar i appen.</string>
     <string name="appUpdateReadyTitle">Appen är klar för uppdatering</string>
     <string name="appUpdateReadyDescription">Starta om appen för att installera den nya versionen</string>
+    <string name="nothing_planned_yet">Inget planerat ännu</string>
+    <string name="schedule_tag_graded">Har bedömts</string>
+    <plurals name="schedule_tag_replies">
+        <item quantity="one">%d svar</item>
+        <item quantity="other">%d svar></item>
+    </plurals>
+    <string name="schedule_tag_feedback">Feedback</string>
+    <string name="schedule_tag_late">Sen</string>
+    <string name="schedule_tag_redo">Gör om</string>
+    <string name="schedule_tag_excused">Ursäktad</string>
+    <string name="tomorrow">I morgon</string>
+    <string name="yesterday">I går</string>
+    <string name="schedule_calendar_event_due_text">kl. %s</string>
+    <string name="schedule_calendar_event_interval_text">%1$s till %2$s</string>
+    <string name="schedule_todo_due_text">Att göra: %s</string>
+    <string name="schedule_due_text">Förfallodatum: %s</string>
+    <string name="show_missing_items_title">Visa %d saknade objekt</string>
+    <string name="hide_missing_items_title">Dölj %d saknade objekt</string>
+    <string name="schedule_error_message">Det gick inte att hämta ditt schema</string>
+    <string name="schedule_todo_title">Att göra</string>
+    <plurals name="schedule_points">
+        <item quantity="zero">%s poäng</item>
+        <item quantity="one">%s poäng</item>
+        <item quantity="other">%s poäng</item>
+    </plurals>
 
+    <plurals name="a11y_schedule_points">
+        <item quantity="zero">%.1f poäng</item>
+        <item quantity="one">%.1f poäng</item>
+        <item quantity="other">%.1f poäng</item>
+    </plurals>
+    <string name="schedule_all_day_event_text">Hela dagen</string>
+    <string name="schedule_tag_missing">Saknad</string>
+    <string name="previous_week">Föregående vecka</string>
+    <string name="next_week">Nästa vecka</string>
+    <string name="a11y_schedule_day_header_content_description">%1$s, %2$s</string>
+    <string name="a11y_schedule_course_header_content_description">Kurs %s</string>
+    <string name="a11y_announcement">Anslag</string>
+    <string name="a11y_discussion_topic">Diskussion</string>
+    <string name="a11y_calendar_event">Kalenderhändelse</string>
+    <string name="a11y_assignment">Uppgift</string>
+    <string name="a11y_planner_note">Planeringsanteckning</string>
+    <string name="a11y_quiz">Quiz</string>
+    <string name="a11y_todo">Att göra</string>
+    <string name="a11y_page">Sida</string>
+    <string name="a11y_marked_as_done">Markera som färdig</string>
+    <string name="a11y_not_marked_as_done">Inte markerad som färdig</string>
+    <string name="a11y_mark_as_done">Markera som färdig</string>
+    <string name="a11y_mark_as_not_done">mark_as_not_done</string>
+    <string name="error_loading_course_details">Oj då! Ett fel uppstod vid inläsning av kursinformationen:</string>
+    <string name="a11y_schedule_marked_as_not_done">%s har markerats som ej färdig</string>
 </resources>

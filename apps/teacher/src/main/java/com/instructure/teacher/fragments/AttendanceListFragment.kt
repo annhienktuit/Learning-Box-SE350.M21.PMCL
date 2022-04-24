@@ -53,6 +53,8 @@ import com.instructure.teacher.holders.AttendanceViewHolder
 import com.instructure.teacher.interfaces.AttendanceToFragmentCallback
 import com.instructure.teacher.presenters.AttendanceListPresenter
 import com.instructure.interactions.router.Route
+import com.instructure.pandautils.analytics.SCREEN_VIEW_ATTENDANCE_LIST
+import com.instructure.pandautils.analytics.ScreenView
 import com.instructure.teacher.router.RouteMatcher
 import com.instructure.teacher.utils.RecyclerViewUtils
 import com.instructure.teacher.utils.setupBackButton
@@ -64,6 +66,7 @@ import org.json.JSONObject
 import java.util.*
 import java.util.regex.Pattern
 
+@ScreenView(SCREEN_VIEW_ATTENDANCE_LIST)
 class AttendanceListFragment : BaseSyncFragment<
         Attendance, AttendanceListPresenter, AttendanceListView, AttendanceViewHolder, AttendanceListRecyclerAdapter>(), AttendanceListView {
 
@@ -101,7 +104,7 @@ class AttendanceListFragment : BaseSyncFragment<
                         calendar.set(Calendar.YEAR, year)
                         calendar.set(Calendar.MONTH, month)
                         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                        presenter?.setSelectedDate(calendar)
+                        presenter.setSelectedDate(calendar)
                         toolbar?.subtitle = DateHelper.getFormattedDate(requireContext(), calendar.time)
                     }, selectedDate.get(Calendar.YEAR),
                         selectedDate.get(Calendar.MONTH),
@@ -109,7 +112,7 @@ class AttendanceListFragment : BaseSyncFragment<
                 }
                 else -> {
                     // Should be a section chosen
-                    presenter?.selectSectionByPosition(menuItem.itemId)
+                    presenter.selectSectionByPosition(menuItem.itemId)
                 }
             }
         }
@@ -122,7 +125,7 @@ class AttendanceListFragment : BaseSyncFragment<
         markRestButtonText.setTextColor(ThemePrefs.buttonTextColor)
         markRestButton.onClickWithRequireNetwork {
             hideMarkRestButton()
-            presenter?.bulkMarkAttendance()
+            presenter.bulkMarkAttendance()
         }
     }
 
@@ -146,7 +149,7 @@ class AttendanceListFragment : BaseSyncFragment<
     override fun createAdapter(): AttendanceListRecyclerAdapter {
         return AttendanceListRecyclerAdapter(requireContext(), presenter, object : AttendanceToFragmentCallback<Attendance> {
             override fun onRowClicked(attendance: Attendance, position: Int) {
-                presenter?.markAttendance(attendance)
+                presenter.markAttendance(attendance)
             }
 
             override fun onAvatarClicked(model: Attendance?, position: Int) {
@@ -202,7 +205,7 @@ class AttendanceListFragment : BaseSyncFragment<
                                 var matchFound = false
                                 while (matcher.find()) {
                                     matchFound = true
-                                    presenter?.fetchAttendance(matcher.group(1), CookieManager.getInstance().getCookie(url))
+                                    presenter.fetchAttendance(matcher.group(1), CookieManager.getInstance().getCookie(url))
                                 }
                                 if(!matchFound) {
                                     unableToLoad()

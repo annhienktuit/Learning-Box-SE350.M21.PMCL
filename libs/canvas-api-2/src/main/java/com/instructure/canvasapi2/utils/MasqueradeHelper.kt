@@ -56,6 +56,7 @@ object MasqueradeHelper {
         cleanupMasquerading(ContextKeeper.appContext)
         ApiPrefs.isMasquerading = false
         ApiPrefs.isStudentView = false
+        ApiPrefs.canvasForElementary = false
         if (startingClass != null) restartApplication(startingClass)
     }
 
@@ -66,7 +67,8 @@ object MasqueradeHelper {
         masqueradeToken: String = "",
         masqueradeClientId: String = ApiPrefs.clientId,
         masqueradeClientSecret: String = ApiPrefs.clientSecret,
-        courseId: Long? = null) {
+        courseId: Long? = null,
+        isElementary: Boolean = false) {
         // Check to see if they're trying to switch domain as site admin, or masquerading as a test student from
         // a different domain
         if (!masqueradingDomain.isNullOrBlank()) {
@@ -81,6 +83,7 @@ object MasqueradeHelper {
             ApiPrefs.accessToken = masqueradeToken
             ApiPrefs.clientId = masqueradeClientId
             ApiPrefs.clientSecret = masqueradeClientSecret
+            ApiPrefs.canvasForElementary = isElementary
         }
 
         try {
@@ -135,25 +138,21 @@ object MasqueradeHelper {
         GlobalScope.launch {
             try {
                 val canvasForElementaryFlag = getCanvasForElementaryFlag()
-                startupIntent.putExtra("canvas_for_elementary", canvasForElementaryFlag)
+                startupIntent.putExtra("canvas_for_elementary", canvasForElementaryFlag || ApiPrefs.canvasForElementary)
             } catch (e: Exception) {
+                startupIntent.putExtra("canvas_for_elementary", ApiPrefs.canvasForElementary)
                 // No-op
             } finally {
                 // Delays process rebirth long enough for all the shared preferences to be saved and caches to be cleared.
-                delay(500)
+                delay(1000)
                 ProcessPhoenix.triggerRebirth(ContextKeeper.appContext, startupIntent)
             }
         }
     }
 
     private suspend fun getCanvasForElementaryFlag(): Boolean {
-        val k5enabled = RemoteConfigUtils.getBoolean(RemoteConfigParam.K5_DESIGN)
-        return if (k5enabled) {
-            val userResult = UserManager.getSelfAsync(false).await()
-            userResult.dataOrThrow.k5User
-        } else {
-            false
-        }
+        val userResult = UserManager.getSelfAsync(false).await()
+        return userResult.dataOrThrow.k5User
     }
 
     /** Appends the masquerade ID to the provided URL (if currently masquerading) */
@@ -171,7 +170,7 @@ object MasqueradeHelper {
         val client = CanvasRestAdapter.client
         if (client != null) {
             try {
-                client.cache()?.evictAll()
+                client.cache?.evictAll()
             } catch (e: IOException) {/* Do Nothing */ }
         }
 

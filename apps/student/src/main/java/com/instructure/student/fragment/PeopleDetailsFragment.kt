@@ -17,6 +17,7 @@
 
 package com.instructure.student.fragment
 
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -37,13 +38,15 @@ import com.instructure.interactions.bookmarks.Bookmarkable
 import com.instructure.interactions.bookmarks.Bookmarker
 import com.instructure.interactions.router.Route
 import com.instructure.interactions.router.RouterParams
+import com.instructure.pandautils.analytics.SCREEN_VIEW_PEOPLE_DETAILS
+import com.instructure.pandautils.analytics.ScreenView
 import com.instructure.pandautils.utils.*
 import com.instructure.student.R
 import com.instructure.student.activity.NothingToSeeHereFragment
 import com.instructure.student.router.RouteMatcher
 import kotlinx.android.synthetic.main.fragment_people_details.*
-import java.util.ArrayList
 
+@ScreenView(SCREEN_VIEW_PEOPLE_DETAILS)
 @PageView(url = "{canvasContext}/users/{userId}")
 class PeopleDetailsFragment : ParentFragment(), Bookmarkable {
 
@@ -69,10 +72,8 @@ class PeopleDetailsFragment : ParentFragment(), Bookmarkable {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val color = ColorKeeper.getOrGenerateColor(canvasContext)
-        compose.colorNormal = color
-        compose.colorPressed = color
-
-        compose.setIconDrawable(ColorKeeper.getColoredDrawable(requireContext(), R.drawable.ic_send, Color.WHITE))
+        compose.backgroundTintList = ColorStateList.valueOf(color)
+        compose.setImageDrawable(ColorKeeper.getColoredDrawable(requireContext(), R.drawable.ic_send, Color.WHITE))
         compose.setOnClickListener {
             // Messaging other users is not available in Student view
             val route = if (ApiPrefs.isStudentView) NothingToSeeHereFragment.makeRoute() else {

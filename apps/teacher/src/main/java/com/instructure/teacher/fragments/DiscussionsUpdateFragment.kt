@@ -28,6 +28,8 @@ import com.instructure.canvasapi2.models.DiscussionEntry
 import com.instructure.canvasapi2.models.DiscussionTopic
 import com.instructure.canvasapi2.utils.APIHelper
 import com.instructure.canvasapi2.utils.Logger
+import com.instructure.pandautils.analytics.SCREEN_VIEW_DISCUSSIONS_UPDATE
+import com.instructure.pandautils.analytics.ScreenView
 import com.instructure.pandautils.dialogs.UnsavedChangesExitDialog
 import com.instructure.pandautils.discussions.DiscussionUtils
 import com.instructure.pandautils.fragments.BasePresenterFragment
@@ -47,6 +49,7 @@ import com.instructure.teacher.utils.setupMenu
 import com.instructure.teacher.viewinterface.DiscussionsUpdateView
 import kotlinx.android.synthetic.main.fragment_discussions_edit.*
 
+@ScreenView(SCREEN_VIEW_DISCUSSIONS_UPDATE)
 class DiscussionsUpdateFragment : BasePresenterFragment<DiscussionsUpdatePresenter, DiscussionsUpdateView>(), DiscussionsUpdateView {
 
     private var mCanvasContext: CanvasContext by ParcelableArg(default = CanvasContext.getGenericContext(CanvasContext.Type.COURSE, -1L, ""))
@@ -74,16 +77,16 @@ class DiscussionsUpdateFragment : BasePresenterFragment<DiscussionsUpdatePresent
         rceTextEditor.setHint(R.string.rce_empty_description)
         rceTextEditor.actionUploadImageCallback = { MediaUploadUtils.showPickImageDialog(this) }
 
-        if (CanvasWebView.containsLTI(presenter?.discussionEntry?.message.orEmpty(), "UTF-8")) {
-            rceTextEditor.setHtml(DiscussionUtils.createLTIPlaceHolders(requireContext(), presenter?.discussionEntry?.message.orEmpty()) { _, placeholder ->
+        if (CanvasWebView.containsLTI(presenter.discussionEntry.message.orEmpty(), "UTF-8")) {
+            rceTextEditor.setHtml(DiscussionUtils.createLTIPlaceHolders(requireContext(), presenter.discussionEntry.message.orEmpty()) { _, placeholder ->
                 placeHolderList.add(placeholder)
             }, "", "", ThemePrefs.brandColor, ThemePrefs.buttonColor)
         } else {
-            rceTextEditor.setHtml(presenter?.discussionEntry?.message, "", "", ThemePrefs.brandColor, ThemePrefs.buttonColor)
+            rceTextEditor.setHtml(presenter.discussionEntry.message, "", "", ThemePrefs.brandColor, ThemePrefs.buttonColor)
         }
 
 
-        presenter?.discussionEntry?.attachments?.firstOrNull()?.let {
+        presenter.discussionEntry.attachments?.firstOrNull()?.let {
             val attachmentView = AttachmentView(requireContext())
 
             attachmentView.setPendingRemoteFile(it, true) { action, attachment ->
@@ -140,7 +143,7 @@ class DiscussionsUpdateFragment : BasePresenterFragment<DiscussionsUpdatePresent
     private fun setupToolbar() {
         toolbar.title = getString(R.string.edit)
         toolbar.setupCloseButton {
-            if (presenter?.discussionEntry?.message == rceTextEditor?.html) {
+            if (presenter.discussionEntry.message == rceTextEditor?.html) {
                 activity?.onBackPressed()
             } else {
                 UnsavedChangesExitDialog.show(requireFragmentManager()) {

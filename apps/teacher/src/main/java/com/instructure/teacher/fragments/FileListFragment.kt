@@ -31,6 +31,8 @@ import com.instructure.canvasapi2.models.FileFolder
 import com.instructure.canvasapi2.utils.APIHelper
 import com.instructure.canvasapi2.utils.isValid
 import com.instructure.interactions.router.Route
+import com.instructure.pandautils.analytics.SCREEN_VIEW_FILE_LIST
+import com.instructure.pandautils.analytics.ScreenView
 import com.instructure.pandautils.dialogs.UploadFilesDialog
 import com.instructure.pandautils.fragments.BaseSyncFragment
 import com.instructure.pandautils.models.EditableFile
@@ -56,6 +58,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
+@ScreenView(SCREEN_VIEW_FILE_LIST)
 class FileListFragment : BaseSyncFragment<
         FileFolder,
         FileListPresenter,
@@ -80,9 +83,6 @@ class FileListFragment : BaseSyncFragment<
                 override fun onAnimationStart(animation: Animation?) = Unit
                 override fun onAnimationRepeat(animation: Animation?) = Unit
                 override fun onAnimationEnd(animation: Animation?) {
-                    /* A11y traversal order for the FABs is specified in the XML layout file, but is only supported
-                    in API 22+. If API level is less than that we need to manually request focus on the first FAB. */
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP_MR1) addFolderFab.requestAccessibilityFocus(0)
                     addFab.contentDescription = getString(R.string.hideCreateFileFolderFabContentDesc)
                 }
             })

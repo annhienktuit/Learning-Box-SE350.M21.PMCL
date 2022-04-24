@@ -21,6 +21,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
+import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
 import com.instructure.canvasapi2.managers.SubmissionManager
 import com.instructure.canvasapi2.models.CanvasContext
@@ -28,12 +29,15 @@ import com.instructure.canvasapi2.models.Tab
 import com.instructure.canvasapi2.utils.ApiPrefs
 import com.instructure.canvasapi2.utils.validOrNull
 import com.instructure.canvasapi2.utils.weave.weave
+import com.instructure.pandautils.analytics.SCREEN_VIEW_LTI_LAUNCH
+import com.instructure.pandautils.analytics.ScreenView
 import com.instructure.pandautils.fragments.BaseFragment
 import com.instructure.pandautils.utils.*
 import com.instructure.teacher.R
 import kotlinx.android.synthetic.main.fragment_lti_launch.*
 import kotlinx.coroutines.Job
 
+@ScreenView(SCREEN_VIEW_LTI_LAUNCH)
 class LtiLaunchFragment : BaseFragment() {
 
     private var title: String? by NullableStringArg(key = Const.TITLE)
@@ -111,8 +115,12 @@ class LtiLaunchFragment : BaseFragment() {
             .appendQueryParameter("platform", "android")
             .build()
 
-        var intent = CustomTabsIntent.Builder()
+        val colorSchemeParams = CustomTabColorSchemeParams.Builder()
             .setToolbarColor(canvasContext?.color ?: ThemePrefs.primaryColor)
+            .build()
+
+        var intent = CustomTabsIntent.Builder()
+            .setDefaultColorSchemeParams(colorSchemeParams)
             .setShowTitle(true)
             .build()
             .intent

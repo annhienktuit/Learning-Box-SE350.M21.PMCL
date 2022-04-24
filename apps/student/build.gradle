@@ -22,16 +22,11 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.firebase.crashlytics'
-apply from: '../../gradle/coverage.gradle'
 apply plugin: 'com.squareup.sqldelight'
 apply plugin: 'dagger.hilt.android.plugin'
 
-def updatePriority = 0
+def updatePriority = 2
 def coverageEnabled = project.hasProperty('coverage')
-
-if (coverageEnabled) {
-    apply from: '../../gradle/jacoco.gradle'
-}
 
 sqldelight {
     StudentDb {
@@ -59,8 +54,8 @@ android {
         applicationId "com.instructure.candroid"
         minSdkVersion Versions.MIN_SDK
         targetSdkVersion Versions.TARGET_SDK
-        versionCode = 228
-        versionName = '6.12.0'
+        versionCode = 238
+        versionName = '6.17.1'
 
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled = true
@@ -186,10 +181,12 @@ android {
         */
         resolutionStrategy.force Libs.ANDROIDX_ANNOTATION
 
-        // Fix for Robolectric 4.x
-        resolutionStrategy.force "org.ow2.asm:asm:7.0"
-
         resolutionStrategy.force Libs.KOTLIN_COROUTINES_CORE
+
+        // Some libraries want to resolve never versions of this library that requires targetSdkVersion 31.
+        // Once we upgrade the targetSdkVersion this should be removed.
+        resolutionStrategy.force 'androidx.core:core:1.6.0'
+        resolutionStrategy.force 'androidx.core:core-ktx:1.6.0'
     }
 
     /*
@@ -214,6 +211,7 @@ android {
                     android,
                     new MasqueradeUITransformer('com.instructure.student.activity.NavigationActivity.class'),
                     new PageViewTransformer(),
+                    new ScreenViewTransformer("student"),
                     new LocaleTransformer(project),
                     new FlutterA11yOffsetTransformer(),
                     new FlutterTextureDisconnectFix()
@@ -249,18 +247,17 @@ dependencies {
     implementation project(path: ':annotations')
     implementation project(path: ':rceditor')
     implementation project(path: ':interactions')
+    implementation project(path: ':DocumentScanner')
 
     /* Flutter embed */
-    implementation project(path: ':flutter-student-embed')
+    implementation (project(path: ':flutter-student-embed')) {
+        exclude group: 'com.google.firebase'
+        exclude group: 'com.google.android.gms'
+    }
 
     /* Android Test Dependencies */
     androidTestImplementation project(path: ':espresso')
     androidTestImplementation project(':dataseedingapi')
-
-    /* OkHttp Idling Resource */
-    implementation('com.jakewharton.espresso:okhttp3-idling-resource:1.0.0') {
-        exclude module: 'espresso-idling-resource'
-    }
 
     /* Unit Test Dependencies */
     testImplementation Libs.JUNIT
@@ -273,10 +270,13 @@ dependencies {
     testImplementation Libs.THREETEN_BP
     testImplementation Libs.ANDROIDX_CORE_TESTING
 
+    /* Firebase */
+    implementation platform(Libs.FIREBASE_BOM)
+    implementation Libs.FIREBASE_MESSAGING
+    implementation Libs.FIREBASE_CRASHLYTICS_NDK
     implementation (Libs.FIREBASE_ANALYTICS) {
         transitive = true
     }
-
     implementation (Libs.FIREBASE_CRASHLYTICS) {
         transitive = true
     }
@@ -291,15 +291,14 @@ dependencies {
     implementation Libs.MOBIUS_EXTRAS
 
     /* Media Handling */
-    implementation 'com.makeramen:roundedimageview:2.3.0'
     implementation Libs.PHOTO_VIEW
-    implementation 'com.airbnb.android:lottie:3.4.1'
+    implementation Libs.LOTTIE
 
     /* Sliding Panel */
-    implementation 'com.sothree.slidinguppanel:library:3.4.0'
+    implementation Libs.SLIDING_UP_PANEL
 
     /* Apache Commons */
-    implementation 'org.apache.commons:commons-text:1.6'
+    implementation Libs.APACHE_COMMONS_TEXT
 
     /* Support dependencies */
     implementation Libs.ANDROIDX_ANNOTATION
@@ -310,17 +309,14 @@ dependencies {
     implementation Libs.ANDROIDX_DESIGN
     implementation Libs.ANDROIDX_RECYCLERVIEW
     implementation Libs.PLAY_SERVICES_ANALYTICS
-    implementation Libs.FIREBASE_MESSAGING
     implementation Libs.ANDROIDX_PALETTE
     implementation Libs.PLAY_CORE
-    implementation Libs.PLAY_CORE_KTX
 
     /* Database */
-    implementation "com.squareup.sqldelight:android-driver:1.4.3"
+    implementation Libs.SQLDELIGHT
 
     /* Qr Code */
-    implementation(Libs.JOURNEY_ZXING) { transitive = false }
-    implementation Libs.ZXING
+    implementation Libs.JOURNEY_ZXING
 
     /* AAC */
     implementation Libs.VIEW_MODEL
@@ -335,9 +331,7 @@ dependencies {
     androidTestImplementation Libs.HILT_TESTING
     kaptAndroidTestQa Libs.HILT_TESTING_COMPILER
 
-    androidTestImplementation 'com.android.support.test.uiautomator:uiautomator-v18:2.1.3'
-
-    implementation "com.google.firebase:firebase-crashlytics-ndk:17.2.1"
+    androidTestImplementation Libs.UI_AUTOMATOR
 }
 
 // Comment out this line if the reporting logic starts going wonky.
@@ -361,43 +355,18 @@ if (coverageEnabled) {
                            '**/*$ViewInjector*.*',
                            '**/*$ViewBinder*.*',
                            '**/BuildConfig.*',
-                           '**/Manifest*.*'],
+                           '**/Manifest*.*',
+                           '**/generated/**',
+                           '**/*Receiver*.*',
+                           '**/model*/**',
+                           '**/di/**',
+                           '**/service*/**'],
                 //includes: ['**/com/instructure/*']
         )
 
         // project.buildDir is /canvas-android/apps/teacher/build
         sourceDirectories.setFrom files(['src/main/java'] + android.sourceSets[productFlavor].java.srcDirs)
         executionData.setFrom fileTree(dir: "results", includes: ['**/*.ec'])
-
-        reports {
-            // default path: /canvas-android/apps/teacher/build/reports/jacoco/firebaseJacoco/html/
-            html.enabled true
-            csv.enabled  false
-            xml.enabled  false
-        }
-    }
-
-    task combinedJacoco(type: JacocoReport) {
-        group = "Reporting"
-        description = "Generate Jacoco coverage reports for FTL + unit tests."
-
-        def productFlavor = 'qa'
-        def buildType = 'debug'
-
-        classDirectories.setFrom fileTree(
-                dir: "${project.buildDir}/tmp/kotlin-classes/qaDebug",
-                excludes: ['**/R.class',
-                           '**/R$*.class',
-                           '**/*$ViewInjector*.*',
-                           '**/*$ViewBinder*.*',
-                           '**/BuildConfig.*',
-                           '**/Manifest*.*'],
-                //includes: ['**/com/instructure/*']
-        )
-
-        // project.buildDir is /canvas-android/apps/teacher/build
-        sourceDirectories.setFrom files(['src/main/java'] + android.sourceSets[productFlavor].java.srcDirs)
-        executionData.setFrom fileTree(dir: ".", includes: ['results/**/*.ec', '**/testQaDebugUnitTest.exec'])
 
         reports {
             // default path: /canvas-android/apps/teacher/build/reports/jacoco/firebaseJacoco/html/

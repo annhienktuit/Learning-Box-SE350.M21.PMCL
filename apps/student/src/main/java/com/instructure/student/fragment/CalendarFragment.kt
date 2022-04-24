@@ -23,10 +23,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.instructure.canvasapi2.models.PlannableType
 import com.instructure.canvasapi2.models.PlannerItem
 import com.instructure.canvasapi2.utils.ApiPrefs
 import com.instructure.canvasapi2.utils.pageview.PageView
 import com.instructure.interactions.router.Route
+import com.instructure.pandautils.analytics.SCREEN_VIEW_CALENDAR
+import com.instructure.pandautils.analytics.ScreenView
 import com.instructure.pandautils.utils.ThemePrefs
 import com.instructure.pandautils.utils.ViewStyler
 import com.instructure.student.R
@@ -39,6 +42,7 @@ import io.flutter.plugin.common.MethodChannel
 import kotlinx.android.extensions.CacheImplementation
 import kotlinx.android.extensions.ContainerOptions
 
+@ScreenView(SCREEN_VIEW_CALENDAR)
 @PageView(url = "calendar")
 @ContainerOptions(cache = CacheImplementation.NO_CACHE)
 class CalendarFragment : ParentFragment() {
@@ -78,13 +82,13 @@ class CalendarFragment : ParentFragment() {
 
     private fun routeToItem(item: PlannerItem) {
         val route: Route? = when (item.plannableType) {
-            "assignment" -> {
+            PlannableType.ASSIGNMENT -> {
                 AssignmentDetailsFragment.makeRoute(item.canvasContext, item.plannable.id)
             }
-            "discussion_topic" -> {
+            PlannableType.DISCUSSION_TOPIC -> {
                 DiscussionDetailsFragment.makeRoute(item.canvasContext, item.plannable.id, title = item.plannable.title)
             }
-            "quiz" -> {
+            PlannableType.QUIZ -> {
                 if (item.plannable.assignmentId != null) {
                     // This is a quiz assignment, go to the assignment page
                     AssignmentDetailsFragment.makeRoute(item.canvasContext, item.plannable.assignmentId!!)
@@ -96,7 +100,7 @@ class CalendarFragment : ParentFragment() {
                     } else null
                 }
             }
-            "calendar_event" -> {
+            PlannableType.CALENDAR_EVENT -> {
                 CalendarEventFragment.makeRoute(item.canvasContext, item.plannable.id)
             }
             else -> {

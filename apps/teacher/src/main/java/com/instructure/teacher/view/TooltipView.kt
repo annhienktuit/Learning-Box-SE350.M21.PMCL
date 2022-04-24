@@ -253,9 +253,9 @@ abstract class TooltipView @JvmOverloads constructor(
     abstract fun drawTutorialView(canvas: Canvas)
 
     /** Returns the length of the longest line in this layout */
-    private fun Layout.maxLineWidth() = (0 until lineCount).map { getLineWidth(it) }.max()?.toInt()
+    private fun Layout.maxLineWidth() = (0 until lineCount).map { getLineWidth(it) }.maxOrNull()?.toInt()
             ?: 0
 
     /** Returns the length of the visible text */
-    private val Layout.visibleTextLength get() = (0 until lineCount).sumBy { getLineVisibleEnd(it) }
+    private val Layout.visibleTextLength get() = (0 until lineCount).sumOf { getLineVisibleEnd(it) }
 }

@@ -36,6 +36,8 @@ import com.instructure.interactions.bookmarks.Bookmarkable
 import com.instructure.interactions.bookmarks.Bookmarker
 import com.instructure.interactions.router.Route
 import com.instructure.interactions.router.RouterParams
+import com.instructure.pandautils.analytics.SCREEN_VIEW_GRADES_LIST
+import com.instructure.pandautils.analytics.ScreenView
 import com.instructure.pandautils.utils.*
 import com.instructure.student.R
 import com.instructure.student.adapter.GradesListRecyclerAdapter
@@ -50,6 +52,7 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.*
 
+@ScreenView(SCREEN_VIEW_GRADES_LIST)
 @PageView(url = "{canvasContext}/grades")
 class GradesListFragment : ParentFragment(), Bookmarkable {
 
@@ -170,6 +173,7 @@ class GradesListFragment : ParentFragment(), Bookmarkable {
             // If the user is turning off what if grades we need to do a full refresh, should be
             // cached data, so fast.
             if (!showWhatIfCheckBox.isChecked) {
+                recyclerAdapter.whatIfGrade = null
                 recyclerAdapter.refresh()
             } else {
                 // Only log when what if grades is checked on

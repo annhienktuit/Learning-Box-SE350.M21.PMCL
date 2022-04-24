@@ -19,7 +19,10 @@ package com.instructure.teacher.fragments
 import android.graphics.Color
 import android.os.Bundle
 import com.instructure.interactions.router.Route
+import com.instructure.pandautils.analytics.SCREEN_VIEW_SETTINGS
+import com.instructure.pandautils.analytics.ScreenView
 import com.instructure.pandautils.dialogs.RatingDialog
+import com.instructure.pandautils.features.notification.preferences.NotificationPreferencesFragment
 import com.instructure.pandautils.fragments.BasePresenterFragment
 import com.instructure.pandautils.fragments.RemoteConfigParamsFragment
 import com.instructure.pandautils.utils.ViewStyler
@@ -36,6 +39,7 @@ import com.instructure.teacher.utils.setupBackButton
 import com.instructure.teacher.viewinterface.ProfileSettingsFragmentView
 import kotlinx.android.synthetic.main.fragment_settings.*
 
+@ScreenView(SCREEN_VIEW_SETTINGS)
 class SettingsFragment : BasePresenterFragment<ProfileSettingsFragmentPresenter, ProfileSettingsFragmentView>(),
     ProfileSettingsFragmentView {
 
@@ -47,6 +51,7 @@ class SettingsFragment : BasePresenterFragment<ProfileSettingsFragmentPresenter,
         profileButton.onClick { RouteMatcher.route(requireContext(), Route(ProfileFragment::class.java, null)) }
         rateButton.onClick { RatingDialog.showRateDialog(requireActivity(), com.instructure.pandautils.utils.AppType.TEACHER) }
         legalButton.onClick { LegalDialog().show(requireFragmentManager(), LegalDialog.TAG) }
+        notificationPreferenesButton.onClick { RouteMatcher.route(requireContext(), Route(NotificationPreferencesFragment::class.java, null)) }
         if (BuildConfig.DEBUG) {
             featureFlagButton.setVisible()
             featureFlagButton.onClick { RouteMatcher.route(requireContext(), Route(FeatureFlagsFragment::class.java, null)) }

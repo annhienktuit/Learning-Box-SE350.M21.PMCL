@@ -40,6 +40,7 @@ import com.instructure.student.activity.NotificationWidgetRouter
 import com.instructure.student.util.StringUtilities
 import kotlinx.coroutines.Job
 import java.io.Serializable
+import java.util.Locale
 
 class NotificationViewWidgetService : BaseRemoteViewsService(), Serializable {
 
@@ -87,11 +88,7 @@ class NotificationViewWidgetService : BaseRemoteViewsService(), Serializable {
 
             if (!BaseRemoteViewsService.shouldHideDetails(appWidgetId)) {
                 if (streamItem.getMessage(ContextKeeper.appContext) != null) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        row.setTextViewText(R.id.message, StringUtilities.simplifyHTML(Html.fromHtml(streamItem.getMessage(ContextKeeper.appContext), Html.FROM_HTML_MODE_LEGACY)))
-                    } else {
-                        row.setTextViewText(R.id.message, StringUtilities.simplifyHTML(Html.fromHtml(streamItem.getMessage(ContextKeeper.appContext))))
-                    }
+                    row.setTextViewText(R.id.message, StringUtilities.simplifyHTML(Html.fromHtml(streamItem.getMessage(ContextKeeper.appContext), Html.FROM_HTML_MODE_LEGACY)))
                 } else {
                     row.setTextViewText(R.id.message, "")
                     row.setViewVisibility(R.id.message, View.GONE)
@@ -128,7 +125,7 @@ class NotificationViewWidgetService : BaseRemoteViewsService(), Serializable {
                     //a message could be related to an assignment, check the category
                     return when {
                         streamItem.contextType == CanvasContext.Type.COURSE -> R.drawable.ic_assignment
-                        streamItem.notificationCategory.toLowerCase().contains("assignment graded") -> R.drawable.ic_grades
+                        streamItem.notificationCategory.lowercase(Locale.getDefault()).contains("assignment graded") -> R.drawable.ic_grades
                         else -> R.drawable.ic_user_avatar
                     }
                 StreamItem.Type.CONFERENCE -> return R.drawable.ic_conferences

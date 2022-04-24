@@ -17,7 +17,6 @@
 package com.instructure.student.fragment
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -29,19 +28,21 @@ import com.instructure.canvasapi2.utils.APIHelper
 import com.instructure.canvasapi2.utils.ApiPrefs
 import com.instructure.canvasapi2.utils.pageview.PageView
 import com.instructure.loginapi.login.dialog.NoInternetConnectionDialog
+import com.instructure.pandautils.analytics.SCREEN_VIEW_APPLICATION_SETTINGS
+import com.instructure.pandautils.analytics.ScreenView
+import com.instructure.pandautils.features.notification.preferences.NotificationPreferencesFragment
 import com.instructure.pandautils.fragments.RemoteConfigParamsFragment
 import com.instructure.pandautils.utils.*
 import com.instructure.student.BuildConfig
 import com.instructure.student.R
 import com.instructure.student.activity.NothingToSeeHereFragment
-import com.instructure.student.activity.NotificationPreferencesActivity
 import com.instructure.student.activity.SettingsActivity
 import com.instructure.student.dialog.LegalDialogStyled
 import com.instructure.student.mobius.settings.pairobserver.ui.PairObserverFragment
-import com.instructure.student.util.Analytics
 import kotlinx.android.synthetic.main.dialog_about.*
 import kotlinx.android.synthetic.main.fragment_application_settings.*
 
+@ScreenView(SCREEN_VIEW_APPLICATION_SETTINGS)
 @PageView(url = "profile/settings")
 class ApplicationSettingsFragment : ParentFragment() {
 
@@ -83,18 +84,19 @@ class ApplicationSettingsFragment : ParentFragment() {
         legal.onClick { LegalDialogStyled().show(requireFragmentManager(), LegalDialogStyled.TAG) }
         pinAndFingerprint.setGone() // TODO: Wire up once implemented
 
-        pairObserver.setVisible()
-        pairObserver.onClick {
-            if (APIHelper.hasNetworkConnection()) {
-                addFragment(PairObserverFragment.newInstance())
-            } else {
-                NoInternetConnectionDialog.show(requireFragmentManager())
+        if (ApiPrefs.canGeneratePairingCode == true) {
+            pairObserver.setVisible()
+            pairObserver.onClick {
+                if (APIHelper.hasNetworkConnection()) {
+                    addFragment(PairObserverFragment.newInstance())
+                } else {
+                    NoInternetConnectionDialog.show(requireFragmentManager())
+                }
             }
         }
 
         pushNotifications.onClick {
-            Analytics.trackAppFlow(requireActivity(), NotificationPreferencesActivity::class.java)
-            startActivity(Intent(requireActivity(), NotificationPreferencesActivity::class.java))
+            addFragment(NotificationPreferencesFragment.newInstance())
         }
 
         about.onClick {

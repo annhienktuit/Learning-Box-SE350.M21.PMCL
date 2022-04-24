@@ -41,6 +41,8 @@ import com.instructure.interactions.bookmarks.Bookmarkable
 import com.instructure.interactions.bookmarks.Bookmarker
 import com.instructure.interactions.router.Route
 import com.instructure.interactions.router.RouterParams
+import com.instructure.pandautils.analytics.SCREEN_VIEW_DISCUSSION_LIST
+import com.instructure.pandautils.analytics.ScreenView
 import com.instructure.pandautils.utils.*
 import com.instructure.student.R
 import com.instructure.student.adapter.DiscussionListRecyclerAdapter
@@ -55,6 +57,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
+@ScreenView(SCREEN_VIEW_DISCUSSION_LIST)
 @PageView(url = "{canvasContext}/discussion_topics")
 open class DiscussionListFragment : ParentFragment(), Bookmarkable {
     protected var canvasContext: CanvasContext by ParcelableArg(key = Const.CANVAS_CONTEXT)
@@ -87,7 +90,7 @@ open class DiscussionListFragment : ParentFragment(), Bookmarkable {
                 if (model.groupTopicChildren.isNotEmpty()) {
                     groupsJob = tryWeave {
                         DiscussionDetailsFragment.getDiscussionGroup(model)?.let {
-                            RouteMatcher.route(requireActivity(), DiscussionDetailsFragment.makeRoute(it.first, it.second))
+                            RouteMatcher.route(requireActivity(), DiscussionDetailsFragment.makeRoute(it.first, it.second, groupDiscussion = true))
                         } ?: RouteMatcher.route(requireActivity(), DiscussionDetailsFragment.makeRoute(canvasContext, model))
                     }.catch {  }
                 } else {

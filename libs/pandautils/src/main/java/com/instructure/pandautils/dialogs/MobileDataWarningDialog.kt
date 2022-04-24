@@ -24,8 +24,11 @@ import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.fragment.app.FragmentManager
 import com.instructure.canvasapi2.utils.NetworkUtils
 import com.instructure.pandautils.R
+import com.instructure.pandautils.analytics.SCREEN_VIEW_MOBILE_DATA_WARNING
+import com.instructure.pandautils.analytics.ScreenView
 import com.instructure.pandautils.utils.*
 
+@ScreenView(SCREEN_VIEW_MOBILE_DATA_WARNING)
 class MobileDataWarningDialog : AppCompatDialogFragment() {
 
     private var mOnProceed: (() -> Unit)? by BlindSerializableArg()
@@ -33,7 +36,7 @@ class MobileDataWarningDialog : AppCompatDialogFragment() {
     init { retainInstance = true }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val checkBox = AppCompatCheckBox(context).apply {
+        val checkBox = AppCompatCheckBox(requireContext()).apply {
             isChecked = false
             setText(R.string.utils_doNotShowMessageAgain)
             textSize = 12f

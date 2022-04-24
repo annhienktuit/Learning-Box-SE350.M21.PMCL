@@ -26,17 +26,16 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import androidx.core.app.JobIntentService
 import androidx.core.app.NotificationCompat
-import android.util.Log
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import com.instructure.student.R
 import com.instructure.canvasapi2.models.Attachment
 import com.instructure.canvasapi2.models.FileFolder
 import com.instructure.pandautils.services.FileUploadService.Companion.CHANNEL_ID
+import com.instructure.student.R
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okio.Okio
 import okio.buffer
 import okio.sink
 import java.io.File
@@ -50,6 +49,8 @@ class FileDownloadJobIntentService : JobIntentService() {
         val fileSize = intent.extras?.getLong(FILE_SIZE) ?: 0L
         val notificationId = intent.extras?.getInt(NOTIFICATION_ID) ?: 0
 
+        val downloadedFileName = createDownloadFileName(fileName)
+
         registerNotificationChannel(this)
 
         // Tell Android where to send the user if they click on the notification
@@ -60,7 +61,7 @@ class FileDownloadJobIntentService : JobIntentService() {
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle(getString(R.string.downloadingFile))
                 .setSmallIcon(android.R.drawable.stat_sys_download)
-                .setContentText(fileName)
+                .setContentText(downloadedFileName)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
@@ -72,7 +73,7 @@ class FileDownloadJobIntentService : JobIntentService() {
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(notificationId, notification.build())
 
-        val resultStatus = downloadFile(fileName, fileUrl) { downloaded ->
+        val resultStatus = downloadFile(downloadedFileName, fileUrl) { downloaded ->
             // Only update our notification if we know the file size
             // If the file size is 0, we can't keep track of anything
             val percentage = when {
@@ -93,7 +94,7 @@ class FileDownloadJobIntentService : JobIntentService() {
             is BadFileUrl, is BadFileName -> notification.setContentText(getString(R.string.downloadFailed))
             is DownloadSuccess -> {
                 notification
-                        .setContentTitle(fileName)
+                        .setContentTitle(downloadedFileName)
                         .setContentText(getString(R.string.downloadSuccessful))
             }
         }
@@ -104,6 +105,25 @@ class FileDownloadJobIntentService : JobIntentService() {
                 .setOngoing(false)
 
         notificationManager.notify(notificationId, notification.build())
+    }
+
+    private fun createDownloadFileName(fileName: String): String {
+        var downloadedFile = File(
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+            fileName
+        )
+        val fileNameWithoutExtension = downloadedFile.nameWithoutExtension
+        val fileExtension = downloadedFile.extension
+        var counter = 1
+        while (downloadedFile.exists()) {
+            downloadedFile = File(
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+                "$fileNameWithoutExtension($counter).$fileExtension"
+            )
+            counter++
+        }
+
+        return downloadedFile.name
     }
 
     private fun downloadFile(fileName: String, fileUrl: String, updateCallback: (Long) -> Unit): DownloadStatus {
@@ -124,7 +144,7 @@ class FileDownloadJobIntentService : JobIntentService() {
         try {
             val okHttp = OkHttpClient.Builder().build()
             val request = Request.Builder().url(fileUrl).build()
-            val source = okHttp.newCall(request).execute().body()?.source() ?: return DownloadFailed()
+            val source = okHttp.newCall(request).execute().body?.source() ?: return DownloadFailed()
             val sink = downloadedFile.sink().buffer()
 
             var startTime = System.currentTimeMillis()
@@ -133,7 +153,7 @@ class FileDownloadJobIntentService : JobIntentService() {
             updateCallback(0)
 
             val bufferSize = 8L * 1024
-            val sinkBuffer = sink.buffer()
+            val sinkBuffer = sink.buffer
 
             // Perform download.
             read = source.read(sinkBuffer, bufferSize)
@@ -202,23 +222,21 @@ class FileDownloadJobIntentService : JobIntentService() {
         }
 
         fun registerNotificationChannel(context: Context) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-                // Prevents recreation of notification channel if it exists.
-                if (notificationManager.notificationChannels.any { it.id == CHANNEL_ID }) return
+            // Prevents recreation of notification channel if it exists.
+            if (notificationManager.notificationChannels.any { it.id == CHANNEL_ID }) return
 
-                // Create the NotificationChannel, but only on API 26+ because
-                // the NotificationChannel class is new and not in the support library
-                val name = context.getString(R.string.notificationChannelNameFileUploadsName)
-                val description = context.getString(R.string.notificationChannelNameFileUploadsDescription)
-                val importance = NotificationManager.IMPORTANCE_HIGH
-                val channel = NotificationChannel(CHANNEL_ID, name, importance)
-                channel.description = description
+            // Create the NotificationChannel, but only on API 26+ because
+            // the NotificationChannel class is new and not in the support library
+            val name = context.getString(R.string.notificationChannelNameFileUploadsName)
+            val description = context.getString(R.string.notificationChannelNameFileUploadsDescription)
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val channel = NotificationChannel(CHANNEL_ID, name, importance)
+            channel.description = description
 
-                // Register the channel with the system
-                notificationManager.createNotificationChannel(channel)
-            }
+            // Register the channel with the system
+            notificationManager.createNotificationChannel(channel)
         }
     }
 }

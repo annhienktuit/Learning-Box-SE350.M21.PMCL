@@ -38,7 +38,6 @@ import java.util.regex.Pattern
  * This currently handles three iframe cases:
  *   -cnvs_content src authentication
  *   -lti iframe src auth and launch button
- *   -new rce videos in iframes
  *
  * We should now be able to call this function, preceded by a simple check for iframes, for all html webview content
  */
@@ -65,20 +64,16 @@ fun WebView.loadHtmlWithIframes(context: Context, isTablet: Boolean, html: Strin
                         hasLtiTool = true
                         val newIframe = inBackground { externalToolIframe(srcUrl, iframe, context); }
                         newHTML = newHTML.replace(iframe, newIframe)
-                    } else if(srcUrl.contains("media_objects_iframe")) {
-                        // Handle the new RCE iframe case
-                        val dataMediaIdMatcher = Pattern.compile("data-media-id=\"([^\"]+)\"").matcher(iframe)
-                        if (dataMediaIdMatcher.find()) {
-                            val dataMediaId = dataMediaIdMatcher.group(1)
-
-                            val newIframe = newRceVideoElement(dataMediaId);
-                            newHTML = newHTML.replace(iframe, newIframe)
-                        }
                     } else if(iframe.contains("id=\"cnvs_content\"")) {
                         // Handle the cnvs_content special case for some schools
                         val authenticatedUrl = inBackground { authenticateLTIUrl(srcUrl) }
                         val newIframe = iframe.replace(srcUrl, authenticatedUrl)
 
+                        newHTML = newHTML.replace(iframe, newIframe)
+                    }
+
+                    if (iframe.contains("overflow: scroll")) {
+                        val newIframe = iframeWithLink(srcUrl, iframe, context)
                         newHTML = newHTML.replace(iframe, newIframe)
                     }
                 }
@@ -106,7 +101,7 @@ fun WebView.loadHtmlWithIframes(context: Context, isTablet: Boolean, html: Strin
     }
 }
 
-suspend fun externalToolIframe(srcUrl: String, iframe: String, context: Context): String {
+private suspend fun externalToolIframe(srcUrl: String, iframe: String, context: Context): String {
     // We need to authenticate the src url and replace it within the iframe
     val ltiUrl = URLEncoder.encode(srcUrl, "UTF-8")
 
@@ -123,16 +118,11 @@ suspend fun externalToolIframe(srcUrl: String, iframe: String, context: Context)
     return newIframe + htmlButton
 }
 
-fun newRceVideoElement(dataMediaId: String): String {
-    // We need to make a new src url with the dataMediaId
-    val newSrcUrl = "/users/self/media_download?entryId=$dataMediaId&media_type=video&redirect=1"
+private fun iframeWithLink(srcUrl: String, iframe: String, context: Context): String {
+    val buttonText = context.getString(R.string.loadFullContent)
+    val htmlButton = "</br><p><div class=\"lti_button\" onClick=\"location.href=\'$srcUrl\'\">$buttonText</div></p>"
 
-    // We can't just update the src url in the iframe, as iframes always auto load/play the src
-    return """
-        <video controls poster=/media_objects/$dataMediaId/thumbnail?width=550&height=448'>
-            <source src="$newSrcUrl" type="video/mp4">
-        </video>
-    """.trimIndent()
+    return iframe + htmlButton
 }
 
 fun handleLTIPlaceHolders(placeHolderList: ArrayList<Placeholder>, html: String): String {

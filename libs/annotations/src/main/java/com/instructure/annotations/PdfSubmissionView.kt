@@ -79,6 +79,7 @@ import com.pspdfkit.ui.special_mode.manager.AnnotationManager
 import com.pspdfkit.ui.toolbar.*
 import com.pspdfkit.ui.toolbar.grouping.MenuItemGroupingRule
 import kotlinx.coroutines.Job
+import okhttp3.Response
 import okhttp3.ResponseBody
 import java.io.File
 import java.util.*
@@ -94,7 +95,15 @@ abstract class PdfSubmissionView(context: Context) : FrameLayout(context), Annot
     protected val supportFragmentManager: FragmentManager = (context as AppCompatActivity).supportFragmentManager
 
     private val annotationCreationList = mutableListOf(AnnotationTool.INK, AnnotationTool.HIGHLIGHT, AnnotationTool.STRIKEOUT, AnnotationTool.SQUARE, AnnotationTool.STAMP, AnnotationTool.FREETEXT, AnnotationTool.ERASER, AnnotationTool.NOTE)
-    private val annototationEditList = mutableListOf(AnnotationType.INK, AnnotationType.HIGHLIGHT, AnnotationType.STRIKEOUT, AnnotationType.SQUARE, AnnotationType.STAMP, AnnotationType.FREETEXT)
+    private val annototationEditList = mutableListOf(
+        AnnotationType.INK,
+        AnnotationType.HIGHLIGHT,
+        AnnotationType.STRIKEOUT,
+        AnnotationType.SQUARE,
+        AnnotationType.STAMP,
+        AnnotationType.FREETEXT,
+        AnnotationType.NONE // Wee need this to enable the eraser
+    )
 
     private val pdfConfiguration: PdfConfiguration = PdfConfiguration.Builder()
             .scrollDirection(PageScrollDirection.VERTICAL)
@@ -558,8 +567,12 @@ abstract class PdfSubmissionView(context: Context) : FrameLayout(context), Annot
     //region Annotation Manipulation
     @Suppress("EXPERIMENTAL_FEATURE_WARNING")
     fun createNewAnnotation(annotation: Annotation) {
+        if (docSession.annotationMetadata?.canWrite() != true) return
+
         // This is a new annotation; Post it
-        commentsButton.isEnabled = false
+        post {
+            commentsButton.isEnabled = false
+        }
 
         createAnnotationJob = tryWeave {
             val canvaDocAnnotation = annotation.convertPDFAnnotationToCanvaDoc(apiValues.documentId)
@@ -592,6 +605,8 @@ abstract class PdfSubmissionView(context: Context) : FrameLayout(context), Annot
 
     @Suppress("EXPERIMENTAL_FEATURE_WARNING")
     private fun updateAnnotation(annotation: Annotation) {
+        if (docSession.annotationMetadata?.canWrite() != true) return
+
         // Don't want to update if we just created a stamp.
         if(annotation.type == AnnotationType.STAMP && !stampRaceFlag) return
         // Annotation modified; Update it
@@ -602,7 +617,8 @@ abstract class PdfSubmissionView(context: Context) : FrameLayout(context), Annot
             }
         } catch {
             if (it is StatusCallbackError) {
-                if (it.response?.raw()?.code() == 404) {
+                val rawResponse: Response? = it.response?.raw()
+                if (rawResponse?.code == 404) {
                     // Not found; Annotation has been deleted and no longer exists.
                     val dialog = AnnotationErrorDialog.getInstance(supportFragmentManager) {
                         // Delete annotation after user clicks OK on dialog
@@ -976,7 +992,7 @@ abstract class PdfSubmissionView(context: Context) : FrameLayout(context), Annot
 
             val annotation = if (pdfFragment?.selectedAnnotations?.size ?: 0 > 0) pdfFragment?.selectedAnnotations?.get(0)
                     ?: return else return
-            if (cancelled && annotation.contents.isNullOrEmpty()) {
+            if ((cancelled && annotation.contents.isNullOrEmpty()) || text.isEmpty()) {
                 // Remove the annotation
                 pdfFragment?.document?.annotationProvider?.removeAnnotationFromPage(annotation)
                 pdfFragment?.notifyAnnotationHasChanged(annotation)

@@ -42,11 +42,15 @@
 
     <string name="notificationChannelNameFileUploadsName">Kaweake ngā whakamōhiotanga</string>
     <string name="notificationChannelNameFileUploadsDescription">Canvas whakamōhitanga mo ngā kaweake e haere tonu ana</string>
+
+
     <!-- Turn in Files -->
     <string name="addFile">Tāpiri Kōnae</string>
+
     <string name="fromCamera">kāmera</string>
     <string name="fromGallery">Taiwhanga</string>
     <string name="fromDevice">pūrere</string>
+    <string name="fromDocumentScanning">Matawai</string>
     <string name="fromOtherApplication">Ētahi atu</string>
     <string name="Domain">rohe</string>
     <string name="files">Kōnae</string>
@@ -96,6 +100,7 @@
     <string name="assignmentSubmissionUpload">Kaweake ana nghā whakamōhitanga mo %s</string>
     <string name="assignmentSubmissionError">I hapa te tapaetanga mo %s</string>
     <string name="assignmentSubmissionComplete">I pai te tuku %s</string>
+
     <!--Errors-->
     <string name="errorOccurred">He hapa ohorere i puta.</string>
     <string name="serverError">He hapa tūmau i puta</string>
@@ -182,9 +187,9 @@
     <string name="noModulesSubtext">Ko te āhua nei kaore anō ngā kōwae i hangaia.</string>
     <string name="noPages">Kaore ngā Whārangi</string>
     <string name="noPagesSubtext">Ko te āhua nei kaore anō ngā whārangi i hangaia.</string>
-
     <string name="modulesLockedSubtext">Kaore ngā kōwae i whakahohetia mō tēnei akoranga.</string>
     <string name="modulesLocked">I raruraru tētahi mea</string>
+
     <!--General-->
     <string name="yes">Ae</string>
     <string name="no">kahore</string>
@@ -378,13 +383,14 @@
     <string name="utils_uploadToSubmissionComment">Tukuake kī Tapaetanga Kōrero</string>
     <string name="utils_attachFile">Tāpiri he kōnae</string>
     <string name="utils_with">ki</string>
+
     <string name="notificationPrimaryInboxTitle">Canvas Whakamohiotanga</string>
     <string name="notificationChannelNamePrimary">Ngā Canvas Whānui Whakamōhiotanga</string>
     <string name="notificationChannelDescriptionPrimary">Ka taea te whakahohe i ētahi atu whakamōhiotanga i roto i te wāhanga Canvas Whakamōhio Hiahiatanga.</string>
-
     <plurals name="notificationGroupContent">
         <item quantity="other">%d whakamōhiotanga whakahou</item>
     </plurals>
+
     <string name="copyLinkAddress">Tārua wāhitau hono</string>
     <string name="copyLink">Tārua hononga</string>
     <string name="linkCopied">Kua tāruatia te hono</string>
@@ -428,5 +434,55 @@
     <string name="notificationChannelDescriptionInAppUpdate">Canvas – ngā whakamōhiotanga mō roto taupānga whakahoutanga</string>
     <string name="appUpdateReadyTitle">Taupānga kua reri mo te whakahou</string>
     <string name="appUpdateReadyDescription">Tīmata anō te taupānga ki te whakauru te wāhanga hou</string>
+    <string name="nothing_planned_yet">Heoi kaore he mahere</string>
+    <string name="schedule_tag_graded">Kōekehia</string>
+    <plurals name="schedule_tag_replies">
+        <item quantity="one">%d Whakautu</item>
+        <item quantity="other">%d Ngā whakautu></item>
+    </plurals>
+    <string name="schedule_tag_feedback">Urupare</string>
+    <string name="schedule_tag_late">Tūreiti</string>
+    <string name="schedule_tag_redo">Mahi anō</string>
+    <string name="schedule_tag_excused">Whakawātea</string>
+    <string name="tomorrow">Apopo</string>
+    <string name="yesterday">Inanahi</string>
+    <string name="schedule_calendar_event_due_text">Ī %s</string>
+    <string name="schedule_calendar_event_interval_text">%1$s ki te %2$s</string>
+    <string name="schedule_todo_due_text">Hei Mahi: %s</string>
+    <string name="schedule_due_text">E tika ana: %s</string>
+    <string name="show_missing_items_title">Whakāturia %d ngā tūemi e ngaro ana</string>
+    <string name="hide_missing_items_title">Huna %d ngā tuemi e ngaro ana</string>
+    <string name="schedule_error_message">Kaore e taea te tiki i tō pūwhakarite</string>
+    <string name="schedule_todo_title">Hei mahi</string>
+    <plurals name="schedule_points">
+        <item quantity="zero">%s koinga</item>
+        <item quantity="one">%s koinga</item>
+        <item quantity="other">%s ngā koinga</item>
+    </plurals>
 
+    <plurals name="a11y_schedule_points">
+        <item quantity="zero">%.1f ngā koinga</item>
+        <item quantity="one">%.1f koinga</item>
+        <item quantity="other">%.1f ngā koinga</item>
+    </plurals>
+    <string name="schedule_all_day_event_text">Te rā katoa</string>
+    <string name="schedule_tag_missing">Ngaro</string>
+    <string name="previous_week">Te Wiki o Mua</string>
+    <string name="next_week">Wiki Muri</string>
+    <string name="a11y_schedule_day_header_content_description">%1$s, %2$s</string>
+    <string name="a11y_schedule_course_header_content_description">Akoranga %s</string>
+    <string name="a11y_announcement">Pānui</string>
+    <string name="a11y_discussion_topic">Kōrerorero</string>
+    <string name="a11y_calendar_event">Maramataka tauwhāinga</string>
+    <string name="a11y_assignment">Whakataunga</string>
+    <string name="a11y_planner_note">Mahere tuhipoka</string>
+    <string name="a11y_quiz">Quiz</string>
+    <string name="a11y_todo">Hei Mahi</string>
+    <string name="a11y_page">Whārangi</string>
+    <string name="a11y_marked_as_done">Tohua kua oti</string>
+    <string name="a11y_not_marked_as_done">Kaore i tohua kua oti</string>
+    <string name="a11y_mark_as_done">Tohu kua oti</string>
+    <string name="a11y_mark_as_not_done">mark_as_not_done</string>
+    <string name="error_loading_course_details">Aue! He hapa i puta i te wā e uta ana i ngā taipitopito akoranga</string>
+    <string name="a11y_schedule_marked_as_not_done">%s kua tohua hei karekau i oti</string>
 </resources>

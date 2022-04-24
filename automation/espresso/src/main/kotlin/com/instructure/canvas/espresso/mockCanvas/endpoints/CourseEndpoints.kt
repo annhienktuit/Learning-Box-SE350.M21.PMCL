@@ -65,6 +65,7 @@ object CourseEndpoint : Endpoint(
         Segment("files") to CourseFilesEndpoint,
         Segment("discussion_topics") to CourseDiscussionTopicListEndpoint,
         Segment("modules") to CourseModuleListEndpoint,
+        Segment("module_item_sequence") to CourseModuleItemSequenceEndpoint,
         Segment("quizzes") to CourseQuizListEndpoint,
         Segment("all_quizzes") to CourseQuizListEndpoint,
         Segment("users") to CourseUsersEndpoint,
@@ -72,7 +73,7 @@ object CourseEndpoint : Endpoint(
         Segment("lti_apps") to CourseLTIAppsEndpoint,
         Segment("grading_periods") to CourseGradingPeriodsEndpoint,
         Segment("sections") to CourseSectionsEndpoint,
-        Segment("enrollments") to CourseEnrollmentsEndpoint,
+        Segment("enrollments") to EnrollmentIndexEndpoint,
         Segment("features") to Endpoint(
                 Segment("enabled") to CourseEnabledFeaturesEndpoint
         ),
@@ -89,7 +90,7 @@ object CourseEndpoint : Endpoint(
                         val settings = data.courseSettings[courseId] ?: CourseSettings()
 
                         // Handle course settings change, if present
-                        val newSyllabusSummaryVisibility = request.url().queryParameter("syllabus_course_summary")
+                        val newSyllabusSummaryVisibility = request.url.queryParameter("syllabus_course_summary")
                         if (newSyllabusSummaryVisibility != null) {
                             settings.courseSummary = newSyllabusSummaryVisibility.toBoolean()
                         }
@@ -115,13 +116,13 @@ object CourseEndpoint : Endpoint(
                 val course = data.courses[pathVars.courseId]!!
 
                 // Handle course name change request if present
-                val newCourseName = request.url().queryParameter("course[name]")
+                val newCourseName = request.url.queryParameter("course[name]")
                 if(newCourseName != null) {
                     course.globalName = newCourseName
                 }
 
                 // Handle course default view change request, if present
-                val newHomePage = request.url().queryParameter("course[default_view]")
+                val newHomePage = request.url.queryParameter("course[default_view]")
                 if(newHomePage != null) {
                     course.homePage = when(newHomePage) {
                         "feed" -> Course.HomePage.HOME_FEED
@@ -134,7 +135,7 @@ object CourseEndpoint : Endpoint(
                 }
 
                 // Handle course syllabus change, if present
-                val updateCourseWrapper = getJsonFromRequestBody<UpdateCourseWrapper>(request.body())
+                val updateCourseWrapper = getJsonFromRequestBody<UpdateCourseWrapper>(request.body)
                 val newSyllabusBody = updateCourseWrapper?.course?.syllabusBody
                 if (newSyllabusBody != null) {
                     course.syllabusBody = newSyllabusBody
@@ -155,17 +156,6 @@ object CourseEnabledFeaturesEndpoint : Endpoint( response = {
     }
 })
 
-/**
- * Endpoint for course enrollments
- */
-object CourseEnrollmentsEndpoint : Endpoint( response = {
-    GET {
-        // TODO: Pay closer attention to query variables (e.g., "include[]=avatar_url", "state[]=active")
-        val courseId = pathVars.courseId
-        val courseEnrollments =  data.enrollments.values.filter {e -> e.courseId == courseId}
-        request.successResponse(courseEnrollments)
-    }
-})
 /**
  * Endpoint for sections
  */
@@ -276,7 +266,7 @@ object CourseFileEndpoint : Endpoint (
             // This is the endpoint that I created for the purpose of uploading assignment files.
             POST {
                 val courseId = pathVars.courseId
-                val jsonObj = grabJsonFromMultiPartBody(request.body()!!)
+                val jsonObj = grabJsonFromMultiPartBody(request.body!!)
                 val fileName = jsonObj["name"].asString
                 val fileSize = jsonObj["size"].asInt
                 val contentType = jsonObj["content_type"].asString
@@ -339,8 +329,8 @@ object CourseDiscussionTopicListEndpoint : Endpoint(
         response = {
             GET {
                 Log.d("<--", "discussion_topics request: ${request}")
-                var announcementsOnly = request.url().queryParameter("only_announcements")?.equals("1")
-                var sectionsOnly = request.url().queryParameterValues("include[]").contains("sections")
+                var announcementsOnly = request.url.queryParameter("only_announcements")?.equals("1")
+                var sectionsOnly = request.url.queryParameterValues("include[]").contains("sections")
 
                 // Base course discussion topic list
                 var courseDiscussionTopics = data.courseDiscussionTopicHeaders[pathVars.courseId]
@@ -374,7 +364,7 @@ object CourseDiscussionTopicListEndpoint : Endpoint(
             }
 
             POST {
-                val jsonObject = grabJsonFromMultiPartBody(request.body()!!)
+                val jsonObject = grabJsonFromMultiPartBody(request.body!!)
                 var newHeader = Gson().fromJson(jsonObject, DiscussionTopicHeader::class.java)
                 var course = data.courses.values.find { it.id == pathVars.courseId }
                 var user = request.user!!
@@ -422,7 +412,7 @@ object CourseQuizListEndpoint : Endpoint(
                                 Segment("events") to endpoint (
                                         configure = {
                                             POST {
-                                                val jsonObject = grabJsonFromMultiPartBody(request.body()!!)
+                                                val jsonObject = grabJsonFromMultiPartBody(request.body!!)
                                                 Log.d("submissions", "new event jsonObject = $jsonObject")
                                                 request.noContentResponse()
                                             }
@@ -475,7 +465,7 @@ object CourseQuizListEndpoint : Endpoint(
                             }
 
                             POST { // new submission
-                                val jsonObject = grabJsonFromMultiPartBody(request.body()!!)
+                                val jsonObject = grabJsonFromMultiPartBody(request.body!!)
                                 Log.d("submissions", "new submission jsonObject = $jsonObject")
                                 val response = getQuizSubmissionResponse(
                                         data = data,
@@ -537,7 +527,7 @@ object CourseQuizListEndpoint : Endpoint(
                         if(quiz != null) {
                             // Grab the QuizPostBodyWrapper in JSON format
                             val buffer = Buffer()
-                            request.body()?.writeTo(buffer)
+                            request.body?.writeTo(buffer)
                             val stringOutput = buffer.readUtf8()
                             val jsonObject = JSONObject(stringOutput)
 
@@ -680,7 +670,7 @@ object CourseDiscussionEntryListEndpoint : Endpoint(
         LongId(PathVars::entryId) to CourseDiscussionEntryEndpoint,
         response = {
             POST {
-                val jsonObject = grabJsonFromMultiPartBody(request.body()!!)
+                val jsonObject = grabJsonFromMultiPartBody(request.body!!)
                 Log.d("<--", "Discussion topic entries post request: $request")
                 Log.d("<--", "post body: $jsonObject")
                 val discussionTopicHeader =
@@ -730,7 +720,7 @@ object CourseDiscussionEntryEndpoint : Endpoint(
         },
         Segment("rating") to endpoint {
             POST {
-                var ratingVal = request.url().queryParameter("rating")?.toInt()
+                var ratingVal = request.url.queryParameter("rating")?.toInt()
                 val topic = data.discussionTopics[pathVars.topicId]
                 val entry = topic?.views?.find { it.id == pathVars.entryId }
                 if (ratingVal == null || topic == null || entry == null) {
@@ -751,7 +741,7 @@ object CourseDiscussionEntryEndpoint : Endpoint(
         },
         Segment("replies") to endpoint {
             POST {
-                val jsonObject = grabJsonFromMultiPartBody(request.body()!!)
+                val jsonObject = grabJsonFromMultiPartBody(request.body!!)
                 Log.d("<--", "topic entry replies post body: $jsonObject")
                 val newEntry = DiscussionEntry(
                         id = data.newItemId(),
@@ -877,9 +867,9 @@ object CourseUsersEndpoint : Endpoint (
     response = {
     GET {
         // We may need to add more "onlyXxx" vars in the future
-        val onlyTeachers = request.url().queryParameter("enrollment_type")?.equals("teacher")
+        val onlyTeachers = request.url.queryParameter("enrollment_type")?.equals("teacher")
                 ?: false
-        val onlyTas = request.url().queryParameter("enrollment_type")?.equals("ta") ?: false
+        val onlyTas = request.url.queryParameter("enrollment_type")?.equals("ta") ?: false
         val courseId = pathVars.courseId
         var courseEnrollments = data.enrollments.values.filter { it.courseId == courseId }
         if (onlyTeachers) {
@@ -903,5 +893,13 @@ object CourseSingleUserEndpoint : Endpoint(
             }
         }
 
+    }
+)
+
+object CourseModuleItemSequenceEndpoint : Endpoint(
+    response = {
+        GET {
+            request.successResponse(ModuleItemSequence())
+        }
     }
 )

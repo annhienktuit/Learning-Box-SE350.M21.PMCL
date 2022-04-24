@@ -30,7 +30,7 @@ import com.instructure.canvas.espresso.waitForMatcherWithSleeps
 import com.instructure.canvasapi2.models.User
 import com.instructure.dataseeding.api.*
 import com.instructure.dataseeding.model.*
-import com.instructure.dataseeding.util.CanvasRestAdapter
+import com.instructure.dataseeding.util.CanvasNetworkAdapter
 import com.instructure.dataseeding.util.Randomizer
 import com.instructure.interactions.router.Route
 import com.instructure.student.R
@@ -38,6 +38,8 @@ import com.instructure.student.activity.LoginActivity
 import com.instructure.student.router.RouteMatcher
 import java.io.File
 import java.io.FileWriter
+
+const val SUB_ACCOUNT_ID = 181364L
 
 fun StudentTest.enterDomain(enrollmentType: String = EnrollmentTypes.STUDENT_ENROLLMENT): CanvasUserApiModel {
     val user = UserApi.createCanvasUser()
@@ -55,6 +57,36 @@ fun StudentTest.slowLogIn(enrollmentType: String = EnrollmentTypes.STUDENT_ENROL
     return user
 }
 
+fun StudentTest.seedDataForK5(
+    teachers: Int = 0,
+    tas: Int = 0,
+    pastCourses: Int = 0,
+    courses: Int = 0,
+    students: Int = 0,
+    favoriteCourses: Int = 0,
+    homeroomCourses: Int = 0,
+    announcements: Int = 0,
+    discussions: Int = 0,
+    syllabusBody: String? = null,
+    gradingPeriods: Boolean = false): SeedApi.SeededDataApiModel {
+
+    val request = SeedApi.SeedDataRequest (
+        teachers = teachers,
+        TAs = tas,
+        students = students,
+        pastCourses = pastCourses,
+        courses = courses,
+        favoriteCourses = favoriteCourses,
+        homeroomCourses = homeroomCourses,
+        accountId = SUB_ACCOUNT_ID, //K5 Sub Account accountId on mobileqa.beta domain
+        gradingPeriods = gradingPeriods,
+        discussions = discussions,
+        announcements = announcements,
+        syllabusBody = syllabusBody
+    )
+    return SeedApi.seedDataForSubAccount(request)
+}
+
 fun StudentTest.seedData(
     teachers: Int = 0,
     tas: Int = 0,
@@ -62,8 +94,10 @@ fun StudentTest.seedData(
     courses: Int = 0,
     students: Int = 0,
     favoriteCourses: Int = 0,
+    homeroomCourses: Int = 0,
     announcements: Int = 0,
     discussions: Int = 0,
+    syllabusBody: String? = null,
     gradingPeriods: Boolean = false): SeedApi.SeededDataApiModel {
 
     val request = SeedApi.SeedDataRequest (
@@ -73,9 +107,11 @@ fun StudentTest.seedData(
             pastCourses = pastCourses,
             courses = courses,
             favoriteCourses = favoriteCourses,
+            homeroomCourses = homeroomCourses,
             gradingPeriods = gradingPeriods,
             discussions = discussions,
-            announcements = announcements
+            announcements = announcements,
+            syllabusBody = syllabusBody
     )
     return SeedApi.seedData(request)
 }
@@ -146,8 +182,26 @@ fun StudentTest.tokenLoginElementary(domain: String, token: String, user: User) 
     elementaryDashboardPage.assertPageObjects()
 }
 
+fun StudentTest.tokenLoginElementary(user: CanvasUserApiModel) {
+    activityRule.runOnUiThread {
+        (originalActivity as LoginActivity).loginWithToken(
+            user.token,
+            user.domain,
+            User(
+                id = user.id,
+                name = user.name,
+                shortName = user.shortName,
+                avatarUrl = user.avatarUrl,
+                effective_locale = "en" // Needed so we don't restart for custom languages (system.exit(0) kills the test process)
+            ),
+            canvasForElementary = true
+        )
+    }
+    elementaryDashboardPage.assertPageObjects()
+}
+
 fun StudentTest.routeTo(route: String) {
-    val url = "canvas-student://${CanvasRestAdapter.canvasDomain}/$route"
+    val url = "canvas-student://${CanvasNetworkAdapter.canvasDomain}/$route"
     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
     val context = InstrumentationRegistry.getInstrumentation().targetContext
     if (context !is Activity) {

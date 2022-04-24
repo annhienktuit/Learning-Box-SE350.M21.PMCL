@@ -32,6 +32,8 @@ import com.instructure.canvasapi2.utils.pageview.PageViewUrl
 import com.instructure.interactions.bookmarks.Bookmarkable
 import com.instructure.interactions.bookmarks.Bookmarker
 import com.instructure.interactions.router.Route
+import com.instructure.pandautils.analytics.SCREEN_VIEW_NOTIFICATION_LIST
+import com.instructure.pandautils.analytics.ScreenView
 import com.instructure.pandautils.utils.*
 import com.instructure.student.R
 import com.instructure.student.activity.ParentActivity
@@ -43,6 +45,7 @@ import com.instructure.student.router.RouteMatcher
 import kotlinx.android.synthetic.main.fragment_list_notification.*
 import kotlinx.android.synthetic.main.panda_recycler_refresh_layout.*
 
+@ScreenView(SCREEN_VIEW_NOTIFICATION_LIST)
 @PageView
 class NotificationListFragment : ParentFragment(), Bookmarkable {
 
@@ -141,7 +144,7 @@ class NotificationListFragment : ParentFragment(), Bookmarkable {
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         configureRecyclerView(
-            view!!,
+            requireView(),
             requireContext(),
             recyclerAdapter,
             R.id.swipeRefreshLayout,
@@ -188,7 +191,7 @@ class NotificationListFragment : ParentFragment(), Bookmarkable {
     companion object {
         fun addFragmentForStreamItem(streamItem: StreamItem, context: Context, fromWidget: Boolean) {
             if (fromWidget) {
-                RouteMatcher.routeUrl(context, streamItem.url ?: streamItem.htmlUrl ?: "") // If we get null URLs, we can't route, so the behavior will just launch the app to whatever screen they were on last
+                RouteMatcher.routeUrl(context, streamItem.url ?: streamItem.htmlUrl) // If we get null URLs, we can't route, so the behavior will just launch the app to whatever screen they were on last
                 return
             }
 

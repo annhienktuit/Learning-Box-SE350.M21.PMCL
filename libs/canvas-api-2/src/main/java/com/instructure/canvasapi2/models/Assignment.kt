@@ -24,6 +24,7 @@ import com.instructure.canvasapi2.utils.ApiPrefs
 import com.instructure.canvasapi2.utils.toDate
 import kotlinx.android.parcel.Parcelize
 import java.util.Date
+import java.util.Locale
 
 @Parcelize
 data class Assignment(
@@ -103,7 +104,14 @@ data class Assignment(
         val externalToolAttributes: ExternalToolAttributes? = null,
         @SerializedName("planner_override")
         val plannerOverride: PlannerOverride? = null,
-        var isStudioEnabled: Boolean = false
+        var isStudioEnabled: Boolean = false,
+        @SerializedName("in_closed_grading_period")
+        val inClosedGradingPeriod: Boolean = false,
+        @SerializedName("annotatable_attachment_id")
+        val annotatableAttachmentId: Long = 0,
+        // For quizzes we need to use this field instead of anonymous_grading to determine if it's anonymous
+        @SerializedName("anonymous_submissions")
+        val anonymousSubmissions: Boolean = false,
 ) : CanvasModel<Assignment>() {
     override val comparisonDate get() = dueDate
     override val comparisonString get() = dueAt
@@ -207,6 +215,9 @@ data class Assignment(
 
     override fun describeContents(): Int = 0
 
+    fun isMissing(): Boolean {
+        return !isSubmitted && dueDate?.before(Date()) ?: false
+    }
 
     companion object {
 
@@ -258,7 +269,10 @@ data class Assignment(
                     else -> SubmissionType.NONE
                 }
 
-        fun submissionTypeToAPIString(submissionType: SubmissionType?): String = submissionType?.name?.toLowerCase() ?: ""
+        fun submissionTypeToAPIString(submissionType: SubmissionType?): String = submissionType?.name?.lowercase(
+            Locale.getDefault()
+        )
+            ?: ""
 
         fun submissionTypeStringToPrettyPrintString(submissionType: String?, context: Context): String? =
                 submissionTypeToPrettyPrintString(getSubmissionTypeFromAPIString(submissionType), context)
@@ -303,7 +317,9 @@ data class Assignment(
             else -> null
         }
 
-        fun gradingTypeToAPIString(gradingType: GradingType?): String? = gradingType?.name?.toLowerCase()
+        fun gradingTypeToAPIString(gradingType: GradingType?): String? = gradingType?.name?.lowercase(
+            Locale.getDefault()
+        )
 
         fun gradingTypeToPrettyPrintString(gradingType: String, context: Context): String? =
                 gradingTypeToPrettyPrintString(getGradingTypeFromAPIString(gradingType), context)

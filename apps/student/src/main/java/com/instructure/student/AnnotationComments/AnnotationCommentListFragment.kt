@@ -39,6 +39,8 @@ import com.instructure.canvasapi2.utils.weave.catch
 import com.instructure.canvasapi2.utils.weave.tryWeave
 import com.instructure.canvasapi2.utils.weave.weave
 import com.instructure.interactions.router.Route
+import com.instructure.pandautils.analytics.SCREEN_VIEW_ANNOTATION_COMMENT_LIST
+import com.instructure.pandautils.analytics.ScreenView
 import com.instructure.pandautils.utils.*
 import com.instructure.student.R
 import com.instructure.student.fragment.ParentFragment
@@ -47,7 +49,9 @@ import kotlinx.android.synthetic.main.fragment_annotation_comment_list.*
 import kotlinx.coroutines.Job
 import okhttp3.ResponseBody
 import org.greenrobot.eventbus.EventBus
+import java.util.Locale
 
+@ScreenView(SCREEN_VIEW_ANNOTATION_COMMENT_LIST)
 class AnnotationCommentListFragment : ParentFragment() {
 
     private var annotations by ParcelableArrayListArg<CanvaDocAnnotation>()
@@ -87,10 +91,10 @@ class AnnotationCommentListFragment : ParentFragment() {
             //we want to show a different title for the root comment
             builder.setTitle(R.string.deleteComment)
             builder.setMessage(if(position == 0) R.string.deleteHeadCommentConfirmation else R.string.deleteCommentConfirmation)
-            builder.setPositiveButton(getString(R.string.delete).toUpperCase()) { _, _ ->
+            builder.setPositiveButton(getString(R.string.delete).uppercase(Locale.getDefault())) { _, _ ->
                 deleteComment(annotation, position)
             }
-            builder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null)
+            builder.setNegativeButton(getString(R.string.cancel).uppercase(Locale.getDefault()), null)
             val dialog = builder.create()
             dialog.setOnShowListener {
                 dialog.getButton(AppCompatDialog.BUTTON_POSITIVE).setTextColor(ThemePrefs.buttonColor)

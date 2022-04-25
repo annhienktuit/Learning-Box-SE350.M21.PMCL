@@ -46,12 +46,16 @@ androidExtensions {
     experimental = true
 }
 
+task wrapper(type: Wrapper){
+    gradleVersion = '4.0.2'
+}
+
 android {
     compileSdkVersion Versions.COMPILE_SDK
     buildToolsVersion Versions.BUILD_TOOLS
 
     defaultConfig {
-        applicationId "com.instructure.candroid"
+        applicationId "com.cohota.candroid"
         minSdkVersion Versions.MIN_SDK
         targetSdkVersion Versions.TARGET_SDK
         versionCode = 238
